@@ -21,7 +21,6 @@ Route::get('/login', [AuthController::class, 'getLogin']);
 Route::post('/login', [AuthController::class, 'postLogin'])->middleware('authLogin');
 Route::get('/operator', [AuthController::class, 'getOperatorView']);
 Route::get('/admin', [AuthController::class, 'getAdminView']);
-
 Route::get('/show-queue', function(){
     $queue = new Client();
     $url = 'http://127.0.0.1:8000/api/queues';

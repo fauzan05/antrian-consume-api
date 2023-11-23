@@ -28,6 +28,9 @@ class AuthController extends Controller
             'password' => $request->password
         ]);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        if(!$response['data']['role']) {
+            return view('users.unprocessable', ['data' => $response['error']['error_message']]);
+        }
         $role = $response['data']['role'];
         if($role == 'operator'){
             Cookie::queue('token',  $response['token'], 1440);
@@ -47,8 +50,7 @@ class AuthController extends Controller
                 'Authorization' => 'Bearer ' . $request->cookie('token')
             ])->get('http://127.0.0.1:8000/api/users/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        return view('dashboard.operator', ['user' => $response]);
-         
+        return view('dashboard.operator', ['user' => $response]);  
     }
 
     public function getAdminView()
