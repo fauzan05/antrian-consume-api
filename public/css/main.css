@@ -1,0 +1,89 @@
+* {
+    font-family: 'Ubuntu', sans-serif;
+}
+.shadow-click {
+    color: white;
+    background-color: #50C878;
+    transition: box-shadow 0.1s ease-in-out;
+    border: none;
+}
+  
+.shadow-click:hover {
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-color {
+    background-color: #50C878;
+}
+
+.navbar-dashboard {
+    background-color: #28282B;
+    height: 4vh;
+}
+
+
+
+.sidebar-color {
+    background-color: #333;
+}
+
+.body-dashboard {
+    background-color: #D3D3D3;
+}
+
+a {
+    text-decoration: none;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #333; /* Warna latar belakang sidebar */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidebar-header {
+    padding: 20px;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    padding: 8px 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #fff; /* Warna teks ketika dihover */
+    background-color: #555; /* Warna latar belakang ketika dihover */
+}
+
+.test {
+    background-color: green;
+    
+}
+
+
+
+
