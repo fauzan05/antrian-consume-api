@@ -24,6 +24,7 @@ class GetCurrentUser extends Component
                 'Authorization' => 'Bearer ' . $this->token
             ])->get('http://127.0.0.1:8000/api/users/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        // dd(var_dump($response));
         $this->name = $response['data']['name'];
         $this->role = $response['data']['role'];
     }

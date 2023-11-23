@@ -1,4 +1,0 @@
-<div>
-    {{ $userId }}
-    
-</div>

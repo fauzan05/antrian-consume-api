@@ -44,12 +44,16 @@ class AuthController extends Controller
     {
         if(empty($request->cookie('token'))){
             return redirect('login')->with('message_session', 'Sesi telah berakhir, silahkan login kembali');
-        } 
+        }
         $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $request->cookie('token')
             ])->get('http://127.0.0.1:8000/api/users/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        if(isset($response['message']) && $response['message'] == 'Unauthenticated.')
+        {
+            return redirect('login');
+        }
         return view('dashboard.operator', ['user' => $response]);  
     }
 

@@ -7,55 +7,9 @@
 
 @section('content')   
         <div class="overflow-y-scroll" style="max-height: 85vh;">
-          @livewire('get-counter', ['userId' => $user['data']['name']])
           <div class="row m-2 d-flex flex-column justify-content-center align-items-center">
             <div class="col-12 m-3">
-              <div class="row d-flex flex-row justify-content-center align-items-center">
-                <div class="col-2 m-3">
-                  <a href="#">
-                    <div class="card shadow-click text-center" style="width: 100%;">
-                      <div class="card-body">
-                        <h3 class="card-text">Loket 1</h3>
-                        <hr>
-                        <h4>A045</h4>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-2 m-3">
-                  <a href="#">
-                    <div class="card shadow-click text-center" style="width: 100%;">
-                      <div class="card-body">
-                        <h3 class="card-text">Loket 1</h3>
-                        <hr>
-                        <h4>A045</h4>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-2 m-3">
-                  <a href="#">
-                    <div class="card shadow-click text-center" style="width: 100%;">
-                      <div class="card-body">
-                        <h3 class="card-text">Loket 1</h3>
-                        <hr>
-                        <h4>A045</h4>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="col-2 m-3">
-                  <a href="#">
-                    <div class="card shadow-click text-center" style="width: 100%;">
-                      <div class="card-body">
-                        <h3 class="card-text">Loket 1</h3>
-                        <hr>
-                        <h4>A045</h4>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
+                @livewire('counter-queue-status')
             </div>
             <hr>
             <div class="col-12">
