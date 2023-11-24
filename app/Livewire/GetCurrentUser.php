@@ -10,6 +10,7 @@ class GetCurrentUser extends Component
     public $token;
     public $name;
     public $role;
+    public $id;
 
     public function mount($token)
     {
@@ -27,6 +28,7 @@ class GetCurrentUser extends Component
         // dd(var_dump($response));
         $this->name = $response['data']['name'];
         $this->role = $response['data']['role'];
+        $this->id = $response['data']['id'];
     }
 
     public function render()
