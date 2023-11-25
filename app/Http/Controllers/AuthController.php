@@ -23,7 +23,7 @@ class AuthController extends Controller
 
     public function postLogin(Request $request)
     {
-        $response = Http::post('http://127.0.0.1:8000/api/users/login', [
+        $response = Http::post('http://localhost:8000/api/users/login', [
             'username' => $request->username,
             'password' => $request->password
         ]);
@@ -48,7 +48,7 @@ class AuthController extends Controller
         $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $request->cookie('token')
-            ])->get('http://127.0.0.1:8000/api/users/current');
+            ])->get('http://localhost:8000/api/users/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         if(isset($response['message']) && $response['message'] == 'Unauthenticated.')
         {
@@ -60,5 +60,14 @@ class AuthController extends Controller
     public function getAdminView()
     {
         return view('dashboard.admin');
+    }
+
+    public function logout(Request $request)
+    {
+       Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $request->cookie('token')
+        ])->delete('http://localhost:8000/api/users/logout');
+        return redirect('login')->with('message', 'Berhasil Keluar');
     }
 }

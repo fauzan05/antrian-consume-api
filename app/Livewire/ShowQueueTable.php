@@ -12,7 +12,6 @@ class ShowQueueTable extends Component
 {
     public $id;
     public $data;
-    
 
     public function mount($idUser)
     {
@@ -22,11 +21,10 @@ class ShowQueueTable extends Component
 
     public function getQueueTable()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/queues/users/' . $this->id);
+        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->id);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         // dd(var_dump($response['data'][0]));
         $this->data = $response['data'];
-        
         $this->dispatch('infoQueue', data:$this->data);
     }
 

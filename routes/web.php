@@ -21,11 +21,6 @@ Route::get('/login', [AuthController::class, 'getLogin']);
 Route::post('/login', [AuthController::class, 'postLogin'])->middleware('authLogin');
 Route::get('/operator', [AuthController::class, 'getOperatorView']);
 Route::get('/admin', [AuthController::class, 'getAdminView']);
-Route::get('/show-queue', function(){
-    $queue = new Client();
-    $url = 'http://127.0.0.1:8000/api/queues';
-    $response = $queue->request('GET', $url);
-    $responseBody = json_decode( $response->getBody() );
-    return view('queue', compact('responseBody'));
-});
+Route::get('/logout', [AuthController::class, 'logout']);
+
 

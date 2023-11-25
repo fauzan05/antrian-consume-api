@@ -16,7 +16,7 @@ class CounterQueueStatus extends Component
 
     private function getCurrentQueue()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/counters/current-queue');
+        $response = Http::get('http://localhost:8000/api/counters/current-queue');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         // dd(var_dump($response));
         $this->data = $response['data'];

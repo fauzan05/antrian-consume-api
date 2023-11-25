@@ -60,7 +60,9 @@
                             data-bs-title="Inbox"></i>
                         <i class="fa-solid fa-bell mx-3" data-bs-toggle="tooltip" data-bs-placement="bottom"
                             data-bs-title="Notifikasi"></i>
-                        <i class="fa-solid fa-power-off mx-3 me-5" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            data-bs-title="Logout"></i>
+                        <a href="{{ url('logout') }}" style="color: red">
+                            <i class="fa-solid fa-power-off mx-3 me-5" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" data-bs-title="Logout"></i>
+                        </a>
                     </div>
                 </nav>
