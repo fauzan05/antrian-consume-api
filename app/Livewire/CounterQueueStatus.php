@@ -11,7 +11,6 @@ class CounterQueueStatus extends Component
 
     public function mount()
     {
-        $this->data;
         $this->getCurrentQueue();
     }
 

@@ -12,6 +12,7 @@ class ShowQueueTable extends Component
 {
     public $id;
     public $data;
+    
 
     public function mount($idUser)
     {
@@ -25,7 +26,10 @@ class ShowQueueTable extends Component
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         // dd(var_dump($response['data'][0]));
         $this->data = $response['data'];
+        
+        $this->dispatch('infoQueue', data:$this->data);
     }
+
     public function render()
     {
         return view('livewire.show-queue-table');
