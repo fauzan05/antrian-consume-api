@@ -2,10 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\On; 
-
 use Livewire\Component;
 
 class ShowQueueTable extends Component

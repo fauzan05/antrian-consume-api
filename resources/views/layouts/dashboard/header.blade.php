@@ -48,7 +48,7 @@
             </div>
             <div class="col-10 p-0 ">
                 <nav class="navbar navbar-expand-sm nav-color shadow-sm">
-                    <a class="navbar-brand ms-5" href="#">Dashboard</a>
+                   @livewire('dashboard-title', ['data' => $user['data'], 'token' => Cookie::get('token')])
                     <form class="d-flex form-inline my-2 mx-auto" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                         <button class="btn btn-outline-success" type="submit">
