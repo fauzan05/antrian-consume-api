@@ -20,25 +20,6 @@ class AuthController extends Controller
     {
         return view('users.login');
     }
-
-    public function postLogin(Request $request)
-    {
-        $response = Http::post('http://localhost:8000/api/users/login', [
-            'username' => $request->username,
-            'password' => $request->password
-        ]);
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        if(!$response['data']['role']) {
-            return view('users.unprocessable', ['data' => $response['error']['error_message']]);
-        }
-        $role = $response['data']['role'];
-        if($role == 'operator'){
-            Cookie::queue('token',  $response['token'], 1440);
-            return redirect('operator')->with("token", $response['token']);
-        }else {
-            return redirect('admin');
-        }
-    }
     
     public function getOperatorView(Request $request)
     {
@@ -69,5 +50,10 @@ class AuthController extends Controller
             'Authorization' => 'Bearer ' . $request->cookie('token')
         ])->delete('http://localhost:8000/api/users/logout');
         return redirect('login')->with('message', 'Berhasil Keluar');
+    }
+
+    public function unprocess()
+    {
+        return view('users.unprocessable');
     }
 }

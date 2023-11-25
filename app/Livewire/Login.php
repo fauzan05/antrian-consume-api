@@ -2,12 +2,52 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\PostForm;
 use Livewire\Component;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Http;
 
 class Login extends Component
 {
+    protected $rules = [
+        'username' => 'required|min:3',
+        'password' => 'required|min:3'
+    ];
+    public $username;
+    public $password;
+    public $message;
+    public function login()
+    {
+        $this->validate();
+
+        $response = Http::post('http://localhost:8000/api/users/login', [
+            'username' => $this->username,
+            'password' => $this->password
+        ]);
+        if ($response->unauthorized()) 
+        {
+            $response->body();
+            // dd($response['error']['error_message']);
+            $this->message = $response['error']['error_message'];
+            return $this->render();
+        }
+        if($response->unprocessableEntity())
+        {
+            return redirect('unprocess');
+        }
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $role = $response['data']['role'];
+        if ($role == 'operator') {
+            Cookie::queue('token', $response['token'], 1440);
+            return redirect('operator')->with("token", $response['token']);
+        } else {
+            Cookie::queue('token', $response['token'], 1440);
+            return redirect('admin');
+        }
+    }
     public function render()
     {
-        return view('livewire.login');
+        return view('livewire.login', ['message' => $this->message]);
     }
 }
