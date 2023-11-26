@@ -1,3 +1,6 @@
+@php
+$token = Cookie::get('token');
+@endphp
     <div class="container-fluid">
         <div class="row">
             <div class="col-2 p-0">
@@ -17,12 +20,12 @@
                                 <div class="col-12 d-flex flex-column mt-3">
                                     <ul class="nav mb-auto nav-pills">
                                         <li class="nav-item ms-2" style="width: 100%">
-                                            <a href="#" class="nav-link text-white">
+                                            <a onclick="pageRedirect1()" class="nav-link text-white">
                                                 <i class="fa-solid fa-list-ol m-3"></i>Antrian
                                             </a>
                                         </li>
                                         <li class="nav-item ms-2" style="width: 100%">
-                                            <a href="#" class="nav-link text-white">
+                                            <a onclick="pageRedirect2()" class="nav-link text-white">
                                                 <i class="fa-solid fa-gear m-3"></i>Pengaturan
                                             </a>
                                         </li>
@@ -36,9 +39,7 @@
                                             <img src="{{ asset('storage/img/blank-profile.jpg') }}"
                                                 class="rounded-circle" alt="" style="width: 100%;">
                                         </div>
-                                        <div class="col-6">
-                                            <p>{{ $user['data']['name'] . ' - ' . $user['data']['role'] }}</p>
-                                        </div>
+                                        @livewire('get-current-user', ['token' => $token])
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +49,7 @@
             </div>
             <div class="col-10 p-0 ">
                 <nav class="navbar navbar-expand-sm nav-color shadow-sm">
-                   @livewire('dashboard-title', ['data' => $user['data'], 'token' => Cookie::get('token')])
+                    @livewire('dashboard-title')
                     <form class="d-flex form-inline my-2 mx-auto" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                         <button class="btn btn-outline-success" type="submit">

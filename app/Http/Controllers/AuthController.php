@@ -21,26 +21,14 @@ class AuthController extends Controller
         return view('users.login');
     }
     
-    public function getOperatorView(Request $request)
+    public function getOperatorView()
     {
-        if(empty($request->cookie('token'))){
-            return redirect('login')->with('message_session', 'Sesi telah berakhir, silahkan login kembali');
-        }
-        $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $request->cookie('token')
-            ])->get('http://localhost:8000/api/users/current');
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        if(isset($response['message']) && $response['message'] == 'Unauthenticated.')
-        {
-            return redirect('login');
-        }
-        return view('dashboard.operator', ['user' => $response]);  
+        return view('dashboard.operator.home');  
     }
 
     public function getAdminView()
     {
-        return view('dashboard.admin');
+        return view('dashboard.admin.home');
     }
 
     public function logout(Request $request)
@@ -55,5 +43,10 @@ class AuthController extends Controller
     public function unprocess()
     {
         return view('users.unprocessable');
+    }
+
+    public function operatorSettings()
+    {
+        return view('dashboard.operator.settings', );
     }
 }

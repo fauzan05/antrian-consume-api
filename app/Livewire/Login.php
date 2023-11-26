@@ -40,7 +40,7 @@ class Login extends Component
         $role = $response['data']['role'];
         if ($role == 'operator') {
             Cookie::queue('token', $response['token'], 1440);
-            return redirect('operator')->with("token", $response['token']);
+            return redirect('operator');
         } else {
             Cookie::queue('token', $response['token'], 1440);
             return redirect('admin');

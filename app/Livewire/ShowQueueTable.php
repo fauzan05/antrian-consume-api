@@ -4,24 +4,31 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+use Livewire\Attributes\On; 
 
 class ShowQueueTable extends Component
 {
-    public $id;
+    public $user_id;
     public $data;
 
-    public function mount($idUser)
+    public function mount()
     {
-        $this->id = $idUser;
+        $this->user_id;
         $this->getQueueTable();
+    }
+
+    #[On('user_id')]
+    public function getUserId($id)
+    {
+        $this->user_id = $id;
     }
 
     public function getQueueTable()
     {
-        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->id);
+        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->user_id);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         // dd(var_dump($response['data'][0]));
-        $this->data = $response['data'];
+        dd(var_dump(($response)));
         $this->dispatch('infoQueue', data:$this->data);
     }
 

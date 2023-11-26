@@ -20,4 +20,11 @@ $(document).ready(function() {
       }
     });
   });
+
+function pageRedirect1(){
+  window.location.href = 'http://localhost:8001/operator';
+}
+function pageRedirect2(){
+  window.location.href = 'http://localhost:8001/operator/pengaturan';
+}
   
