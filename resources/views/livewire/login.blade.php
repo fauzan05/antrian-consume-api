@@ -1,9 +1,4 @@
 <div class="col-5">
-    @if (session()->has('message_401'))
-        <div class="alert alert-danger" role="alert">
-            {{ session()->get('message_401') }}
-        </div>
-    @endif
     @if (isset($message))
         <div class="alert alert-danger" role="alert">
             {{ $message }}

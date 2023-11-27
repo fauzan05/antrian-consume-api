@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 
 class Login extends Component
 {
+    public $username;
+    public $password;
+    public $message;
     protected $rules = [
         'username' => 'required|min:3',
         'password' => 'required|min:3'
     ];
-    public $username;
-    public $password;
-    public $message;
     public function login()
     {
         $this->validate();
