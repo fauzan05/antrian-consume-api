@@ -7,8 +7,8 @@
 
 @section('content')
     <div class="overflow-y-scroll" style="max-height: 85vh;">
-            @livewire('queues-menus', ['user' => $user, 'token' => Cookie::get('token')])
-        </div>
+        @livewire('queues-menus', ['user' => $user, 'token' => Cookie::get('token')])
+    </div>
     </div>
     </div>
     </div>

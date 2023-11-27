@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 @endpush
 @section('content')
-<div class="d-flex justify-content-between align-items-center mt-5" style="height: 80%;">
+<div class="overflow-y-scroll" style="max-height: 85vh;">
+<div class="d-flex justify-content-between align-items-center mt-5 mb-5" style="height: 80%;">
     <div class="row m-2 d-flex justify-content-center align-items-center">
         <div class="col-10">
             <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
@@ -27,6 +28,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 @push('js')
