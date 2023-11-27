@@ -2,37 +2,44 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\Attributes\On; 
 
 class DashboardTitle extends Component
 {
+    public $user;
     public $role;
-    public $userid;
     public $token;
     public $currentCounter;
 
-    #[On('user-name')]
-    public function mount()
+    public function mount($token)
     {
-        $this->userid;
+        $this->token = $token;
+        $this->getUser();
+        $this->getCounter();
     }
     
-    #[On('user-name')]
-    public function getUserId($data)
+    public function getUser()
     {
-        $this->userid = $data;
-    } 
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ])->get('http://localhost:8000/api/users/current');
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $this->user = $response['data'];
+        $this->role = $response['data']['role'];
+        $this->dispatch('users', data: $this->user);
+    }
 
     public function getCounter()
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->get('http://localhost:8000/api/counters/users/' . $this->user_id);
+        ])->get('http://localhost:8000/api/counters/users/' . $this->user['id']);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        // dd($response['data']);
         $this->currentCounter = $response['data']['name'];
     }
 

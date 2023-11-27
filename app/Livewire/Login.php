@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\PostForm;
-use Livewire\Component;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
+use Livewire\Component;
+use Illuminate\Http\Request;
+
 
 class Login extends Component
 {
@@ -20,7 +20,6 @@ class Login extends Component
     public function login()
     {
         $this->validate();
-
         $response = Http::post('http://localhost:8000/api/users/login', [
             'username' => $this->username,
             'password' => $this->password
@@ -40,7 +39,7 @@ class Login extends Component
         $role = $response['data']['role'];
         if ($role == 'operator') {
             Cookie::queue('token', $response['token'], 1440);
-            return redirect('operator');
+            return redirect('operator')->with("token", $response['token']);
         } else {
             Cookie::queue('token', $response['token'], 1440);
             return redirect('admin');
@@ -48,6 +47,6 @@ class Login extends Component
     }
     public function render()
     {
-        return view('livewire.login', ['message' => $this->message]);
+        return view('livewire.login');
     }
 }

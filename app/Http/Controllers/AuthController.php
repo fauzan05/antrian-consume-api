@@ -21,7 +21,7 @@ class AuthController extends Controller
         return view('users.login');
     }
     
-    public function getOperatorView()
+    public function getOperatorView(Request $request)
     {
         return view('dashboard.operator.home');  
     }
@@ -47,6 +47,6 @@ class AuthController extends Controller
 
     public function operatorSettings()
     {
-        return view('dashboard.operator.settings', );
+        return view('dashboard.operator.settings');
     }
 }

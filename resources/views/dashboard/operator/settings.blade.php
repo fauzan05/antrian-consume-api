@@ -18,7 +18,7 @@
                                 </div>
                             </div>
                             <div class="col-10">
-                                <img src="change-password.jpg" alt="" style="width: 100%;">
+                                <img src="{{ asset('storage/img/login.jpg') }}" alt="" style="width: 100%;">
                             </div>
                         </div>
                     </div>
