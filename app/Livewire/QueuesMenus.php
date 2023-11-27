@@ -11,24 +11,17 @@ class QueuesMenus extends Component
     public $token;
     public $user;
     public $queues;
+    public $counters;
     public $remainQueue; // sisa antrian
     public $totalQueue; // total antrian
     public $currentQueue; // antrian sekarang
     public $nextQueue; // antrian selanjutnya
-    public function mount($token)
+    public function mount($user, $token)
     {
+        $this->user = $user;
         $this->token = $token;
-        $this->getUser();
+        $this->getCurrentQueue();
         $this->getQueue();
-    }
-    public function getUser()
-    {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->get('http://localhost:8000/api/users/current');
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->user = $response['data'];
     }
     public function getQueue()
     {
@@ -47,6 +40,12 @@ class QueuesMenus extends Component
             return $var['status'] == 'called';
         }));
         $this->nextQueue = $this->currentQueue + 1;
+    }
+    private function getCurrentQueue()
+    {
+        $response = Http::get('http://localhost:8000/api/counters/current-queue');
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $this->counters = $response['data'];
     }
     public function render()
     {

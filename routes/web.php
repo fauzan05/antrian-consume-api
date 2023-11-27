@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AuthController::class, 'index']);
 Route::get('/login', [AuthController::class, 'getLogin']);
 Route::get('/operator', [AuthController::class, 'getOperatorView'])->middleware('userAuth');
-Route::get('/operator/pengaturan', [AuthController::class, 'operatorSettings']);
+Route::get('/operator/pengaturan', [AuthController::class, 'operatorSettings'])->middleware('userAuth');
 Route::get('/admin', [AuthController::class, 'getAdminView']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);

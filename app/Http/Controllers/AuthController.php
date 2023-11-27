@@ -20,10 +20,15 @@ class AuthController extends Controller
     {
         return view('users.login');
     }
-    
+
     public function getOperatorView(Request $request)
     {
-        return view('dashboard.operator.home');  
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $request->cookie('token')
+        ])->get('http://127.0.0.1:8000/api/users/current');
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        return view('dashboard.operator.home', ['user' => $response['data']]);
     }
 
     public function getAdminView()
@@ -33,7 +38,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-       Http::withHeaders([
+        Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
         ])->delete('http://localhost:8000/api/users/logout');
@@ -45,8 +50,13 @@ class AuthController extends Controller
         return view('users.unprocessable');
     }
 
-    public function operatorSettings()
+    public function operatorSettings(Request $request)
     {
-        return view('dashboard.operator.settings');
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $request->cookie('token')
+        ])->get('http://127.0.0.1:8000/api/users/current');
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        return view('dashboard.operator.settings', ['user' => $response['data']]);
     }
 }

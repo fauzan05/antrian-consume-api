@@ -36,7 +36,9 @@
                                         <img src="{{ asset('storage/img/blank-profile.jpg') }}" class="rounded-circle"
                                             alt="" style="width: 100%;">
                                     </div>
-                                    @livewire('get-current-user')
+                                    <div class="col-6">
+                                        <p>{{ $user['name'] . ' - ' . $user['role'] }}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +48,7 @@
         </div>
         <div class="col-10 p-0 ">
             <nav class="navbar navbar-expand-sm nav-color shadow-sm">
-                @livewire('dashboard-title', ['token' => Cookie::get('token')])
+                @livewire('dashboard-title', ['user' => $user])
                 <form class="d-flex form-inline my-2 mx-auto" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                     <button class="btn btn-outline-success" type="submit">

@@ -7,12 +7,7 @@
 
 @section('content')
     <div class="overflow-y-scroll" style="max-height: 85vh;">
-        <div class="row m-2 d-flex flex-column justify-content-center align-items-center">
-            <div class="col-12 m-3">
-                @livewire('counter-queue-status')
-            </div>
-            <hr>
-            @livewire('queues-menus', ['token' => Cookie::get('token')])
+            @livewire('queues-menus', ['user' => $user, 'token' => Cookie::get('token')])
         </div>
     </div>
     </div>

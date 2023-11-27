@@ -14,11 +14,11 @@
 </head>
 <body class="bg-body-tertiary">
         {{-- Header --}}
-        @include('layouts.dashboard.header')
+        @include('layouts.dashboard.operator.header')
         {{-- Content --}}
         @yield('content')
         {{-- Footer --}}
-        @include('layouts.dashboard.footer')
+        @include('layouts.dashboard.operator.footer')
 @stack('js')
 </body>
 </html>
