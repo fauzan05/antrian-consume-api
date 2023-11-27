@@ -2,7 +2,8 @@ const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 
-$(document).ready(function() {
+function isActive(){
+  $(document).ready(function() {
     // Memilih semua elemen dengan class .nav-link dan menambahkan event click
     $('.nav-link').click(function(e) {
       e.preventDefault(); // Menghentikan aksi default dari link
@@ -20,11 +21,6 @@ $(document).ready(function() {
       }
     });
   });
+}
 
-function pageRedirect1(){
-  window.location.href = 'http://localhost:8001/operator';
-}
-function pageRedirect2(){
-  window.location.href = 'http://localhost:8001/operator/pengaturan';
-}
   
