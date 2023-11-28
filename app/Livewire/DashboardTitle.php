@@ -25,6 +25,7 @@ class DashboardTitle extends Component
         $response = Http::get('http://localhost:8000/api/counters/users/' . $this->user_id);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->currentCounter = $response['data']['name'];
+        $this->dispatch('current-counter-id', data: $response['data']['id']);
     }
    
     public function render()

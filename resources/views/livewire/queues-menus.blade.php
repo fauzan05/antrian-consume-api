@@ -3,15 +3,13 @@
         <div class="row d-flex flex-row justify-content-center align-items-center">
             @foreach ($counters as $item)
                 <div class="col-2 m-3">
-                    <a href="#">
-                        <div class="card shadow-click text-center" style="width: 100%;">
-                            <div class="card-body">
-                                <h3 class="card-text">{{ $item['name'] }}</h3>
-                                <hr>
-                                <h4>{{ $item['number'] }}</h4>
-                            </div>
+                    <div class="card shadow-click text-center" style="width: 100%;">
+                        <div class="card-body">
+                            <h3 class="card-text">{{ $item['name'] }}</h3>
+                            <hr>
+                            <h4>{{ $item['number'] }}</h4>
                         </div>
-                    </a>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -87,12 +85,15 @@
                                     <td>{{ $item['number'] }}</td>
                                     <td>{{ $item['service_name'] }}</td>
                                     <td>{{ $item['status'] }}</td>
-                                    <td><a href="#" class="ms-4" style="color: red">
+                                    <td><a href="#" wire:click.prevent="panggil({{ $item['id'] }})"
+                                            role="button" class="btn ms-4 {{ $showButton }}" aria-disabled="true"
+                                            style="color: red" disabled>
                                             <i class="fa-solid fa-microphone"></i> </a></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <audio src="http://127.0.0.1:8000/api/files/opening"></audio>
                 </div>
                 <div>
                 </div>
