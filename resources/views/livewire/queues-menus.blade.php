@@ -86,7 +86,7 @@
                                     <td>{{ $item['service_name'] }}</td>
                                     <td>{{ $item['status'] }}</td>
                                     <td><a href="#" wire:click.prevent="panggil({{ $item['id'] }})"
-                                            role="button" class="btn ms-4 {{ $showButton }}" aria-disabled="true"
+                                            role="button" class="ms-4" aria-disabled="true"
                                             style="color: red" disabled>
                                             <i class="fa-solid fa-microphone"></i> </a></td>
                                 </tr>
