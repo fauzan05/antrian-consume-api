@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Http;
 
 class QueuesMenus extends Component
 {
-    public $notif;
     public $token;
     public $user;
     public $queues;
@@ -34,11 +33,11 @@ class QueuesMenus extends Component
     public function getListeners()
     {
         return [
-            'echo:queues-menus-channel,QueuesMenusEvent' => 'getQueuesNotif',
+            'echo:queues-menus-channel,QueuesMenusEvent' => 'getQueuesInfo',
         ];
     }
 
-    public function getQueuesNotif()
+    public function getQueuesInfo()
     {
         $this->getQueue();
         $this->getCurrentQueue();
