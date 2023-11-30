@@ -19,6 +19,8 @@
         @yield('content')
         {{-- Footer --}}
         @include('layouts.dashboard.operator.footer')
+        
+@vite('resources/js/app.js')
 @stack('js')
 </body>
 </html>

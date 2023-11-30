@@ -21,6 +21,7 @@
                 <div class="row d-flex flex-column justify-content-center align-items-center">
                     <div class="col-12 text-center mb-3">
                         <h3>Informasi</h3>
+                            {{ $notif }}
                     </div>
                     <div class="col-12 m-3">
                         <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
@@ -93,7 +94,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <audio src="http://127.0.0.1:8000/api/files/opening"></audio>
                 </div>
                 <div>
                 </div>
@@ -101,3 +101,4 @@
         </div>
     </div>
 </div>
+
