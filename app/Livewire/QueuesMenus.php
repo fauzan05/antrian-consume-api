@@ -34,6 +34,7 @@ class QueuesMenus extends Component
     {
         return [
             'echo:queues-menus-channel,QueuesMenusEvent' => 'getQueuesInfo',
+            'echo:services-menus-channel,ServicesMenusEvent' => 'getQueuesInfo',
         ];
     }
 

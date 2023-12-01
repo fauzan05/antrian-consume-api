@@ -15,13 +15,13 @@
 </head>
 
 <body class="bg-body-tertiary">
-    
+
     {{-- Header --}}
-    @include('layouts.dashboard.operator.header')
-    {{-- Content --}}
+    @include('layouts.services.header')
+    {{-- Body --}}
     @yield('content')
     {{-- Footer --}}
-    @include('layouts.dashboard.operator.footer')
+    @include('layouts.services.footer')
 
 </body>
 

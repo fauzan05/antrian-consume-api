@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class QueuesMenusEvent implements ShouldBroadcast
+class ServicesMenusEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,6 +21,7 @@ class QueuesMenusEvent implements ShouldBroadcast
     {
         //
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -28,6 +29,6 @@ class QueuesMenusEvent implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('queues-menus-channel');
+        return new Channel('services-menus-channel');
     }
 }

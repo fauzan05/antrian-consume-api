@@ -3,6 +3,7 @@
 use App\Events\SimpleNotif;
 use App\Events\TestingWebsockets;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ServiceController;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Http;
@@ -27,8 +28,4 @@ Route::get('/operator/pengaturan', [AuthController::class, 'operatorSettings'])-
 Route::get('/admin', [AuthController::class, 'getAdminView']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);
-
-Route::get('/call-event', function(){
-    Broadcast(new SimpleNotif("Berhasil Dipanggil"));
-});
-
+Route::get('/services', [ServiceController::class, 'index']);

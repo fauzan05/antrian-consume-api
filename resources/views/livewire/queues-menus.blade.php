@@ -21,7 +21,6 @@
                 <div class="row d-flex flex-column justify-content-center align-items-center">
                     <div class="col-12 text-center mb-3">
                         <h3>Informasi</h3>
-                            {{ $notif }}
                     </div>
                     <div class="col-12 m-3">
                         <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
