@@ -3,7 +3,7 @@
         <div class="row d-flex flex-row justify-content-center align-items-center">
             @foreach ($counters as $item)
                 <div class="col-2 m-3">
-                    <div class="card shadow-click text-center" style="width: 100%;">
+                    <div class="card shadow-click bg-success text-center" style="width: 100%;">
                         <div class="card-body">
                             <h3 class="card-text">{{ $item['name'] }}</h3>
                             <hr>
@@ -54,7 +54,6 @@
                             <div class="card-body">
                                 <h5>Antrian Selanjutnya <i class="fa-solid fa-user-clock"></i></h5>
                                 <hr>
-                                <h5>{{ $nextQueue }}</h5>
                             </div>
                         </div>
                     </div>
@@ -85,9 +84,10 @@
                                     <td>{{ $item['number'] }}</td>
                                     <td>{{ $item['service_name'] }}</td>
                                     <td>{{ $item['status'] }}</td>
-                                    <td><a href="#" wire:click.prevent="panggil({{ $item['id'] }})"
-                                            role="button" class="ms-4" aria-disabled="true"
-                                            style="color: red" disabled>
+                                    <td><a href="#"
+                                            wire:click.prevent="panggil({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}')"
+                                            role="button" class="ms-4" aria-disabled="true" style="color: red"
+                                            disabled>
                                             <i class="fa-solid fa-microphone"></i> </a></td>
                                 </tr>
                             @endforeach
@@ -100,4 +100,3 @@
         </div>
     </div>
 </div>
-

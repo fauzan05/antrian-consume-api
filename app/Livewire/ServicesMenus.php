@@ -29,8 +29,6 @@ class ServicesMenus extends Component
             'service_id' => $id
         ]);
         Broadcast(new ServicesMenusEvent());
-        $this->getServices();
-        $this->render();
     }
     public function render()
     {

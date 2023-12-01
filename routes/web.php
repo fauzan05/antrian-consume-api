@@ -3,6 +3,7 @@
 use App\Events\SimpleNotif;
 use App\Events\TestingWebsockets;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QueueController;
 use App\Http\Controllers\ServiceController;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Broadcast;
@@ -29,3 +30,4 @@ Route::get('/admin', [AuthController::class, 'getAdminView']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);
 Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/queues', [QueueController::class, 'index']);

@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar shadow navbar-expand-sm d-flex navbar-dark navbar-color py-3">
+    <nav class="navbar shadow navbar-expand-sm d-flex navbar-dark bg-success py-3">
         <div class="container">
             <a class="navbar-brand text-white" href="{{ url('/') }}">
                 <img src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="Bootstrap" width="40" height="40">

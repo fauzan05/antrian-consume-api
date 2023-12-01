@@ -3,7 +3,6 @@
 }
 .shadow-click {
     color: white;
-    background-color: #50C878;
     transition: box-shadow 0.1s ease-in-out;
     border: none;
 }
@@ -12,16 +11,10 @@
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
 }
 
-.navbar-color {
-    background-color: #50C878;
-}
-
 .navbar-dashboard {
     background-color: #28282B;
     height: 4vh;
 }
-
-
 
 .sidebar-color {
     background-color: #333;

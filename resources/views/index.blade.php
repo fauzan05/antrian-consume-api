@@ -14,7 +14,7 @@
         <div class="col-5 mt-5">
             <a href="http://127.0.0.1:8001/login">
             <div class="col-12 m-3">
-                <div class="card shadow-click text-center" style="width: 100%;">
+                <div class="card shadow-click bg-success text-center" style="width: 100%;">
                     <div class="card-body">
                         <span class="fa-solid fa-user"></span>
                         <h3 class="card-text">Menu User</h3>
@@ -24,7 +24,7 @@
             </a>
             <a href="http://127.0.0.1:8001/queues">
             <div class="col-12 m-3">
-                <div class="card shadow-click text-center" style="width: 100%;">
+                <div class="card shadow-click bg-success text-center" style="width: 100%;">
                     <div class="card-body">
                         <span class="fa-solid fa-list-ol"></span>
                         <h3 class="card-text">Menu Antrian</h3>
@@ -34,7 +34,7 @@
             </a>
             <a href="http://127.0.0.1:8001/services">
             <div class="col-12 m-3">
-                <div class="card shadow-click text-center" style="width: 100%;">
+                <div class="card shadow-click bg-success text-center" style="width: 100%;">
                     <div class="card-body">
                         <span class="fa-solid fa-grip"></span>
                         <h3 class="card-text">Menu Layanan</h3>

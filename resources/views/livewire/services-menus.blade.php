@@ -4,7 +4,7 @@
             @foreach ($services as $service)
                 <a wire:click.prevent="createQueue({{ $service['id'] }})" href="#" class="col-4 m-3"
                     style="width: 40%; height: 30vh;">
-                    <div class="card shadow-click text-center" style="height: 100%;">
+                    <div class="card shadow-click bg-success text-center" style="height: 100%;">
                         <div class="card-body d-flex justify-content-center align-items-center">
                             <hr>
                             <h3 class="card-text">{{ $service['name'] }}</h3>

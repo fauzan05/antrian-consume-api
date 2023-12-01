@@ -2,12 +2,11 @@
 
 namespace App\Livewire;
 
+
 use App\Events\CurrentQueuesEvent;
-use App\Events\QueuesEvent;
 use App\Events\QueuesMenusEvent;
 use Illuminate\Support\Facades\Broadcast;
 use Livewire\Component;
-use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Http;
 
 class QueuesMenus extends Component
@@ -43,7 +42,7 @@ class QueuesMenus extends Component
         $this->getQueue();
         $this->getCurrentQueue();
     }
-    public function panggil($id)
+    public function panggil($id, $number, $service_name)
     {
         Http::withHeaders([
             'Accept' => 'application/json',
@@ -52,7 +51,9 @@ class QueuesMenus extends Component
             'status' => 'called',
             'counter_id' => $this->counter_id
         ]);
+        $data = [$number, $service_name];
         Broadcast(new QueuesMenusEvent());
+        Broadcast(new CurrentQueuesEvent($data));
     }
 
     public function getCurrentIdCounter()
