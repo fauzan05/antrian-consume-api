@@ -22,6 +22,7 @@
     @yield('content')
     {{-- Footer --}}
     @include('layouts.services.footer')
+    @stack('js')
 
 </body>
 

@@ -1,9 +1,9 @@
-@extends('layouts.app')
-
-@section('title', 'Login User')
 @push('css')
+    <link rel="stylesheet" href="{{ asset('bootstrap-5.3.2-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 @endpush
+@extends('layouts.login')
+@section('title', 'Login User')
 @section('content')
     <div class="container mt-5">
         <div class="row align-items-center justify-content-center">

@@ -9,5 +9,3 @@
         </div>
     </nav>
 </header>
-<script src="{{ asset('js/main.js') }}"></script>
-

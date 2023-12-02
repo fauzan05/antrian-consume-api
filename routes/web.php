@@ -31,3 +31,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get('/queues', [QueueController::class, 'index']);
+
+Route::get('/error', function() {
+    return response()->view('errors.500', [], 500);
+});
