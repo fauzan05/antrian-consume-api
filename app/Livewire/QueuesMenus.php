@@ -44,14 +44,15 @@ class QueuesMenus extends Component
     }
     public function panggil($id, $number, $service_name)
     {
-        Http::withHeaders([
+        $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
         ])->put('http://127.0.0.1:8000/api/queues/' . $id, [
             'status' => 'called',
             'counter_id' => $this->counter_id
         ]);
-        $data = [$number, $service_name];
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $data = [$number, $service_name, $response['data'][0]['link-audio']];
         Broadcast(new QueuesMenusEvent());
         Broadcast(new CurrentQueuesEvent($data));
     }
