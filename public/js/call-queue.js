@@ -7,10 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
         audioFiles.push(audio);
       });
       panggil(audioFiles);
-    //   console.log(e['data'][2]);
+      console.log(e['data'][2]);
     });
 });
-
 function panggil(audioFiles) {
   var currentAudioIndex = 0;
   var audio = new Audio(audioFiles[currentAudioIndex]);
@@ -28,6 +27,7 @@ function panggil(audioFiles) {
         currentAudioIndex++;
       } else {
         audioFiles.splice(null, audioFiles.length);
+        Livewire.dispatch('buttonState');
       }
     });
   }

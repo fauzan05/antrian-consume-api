@@ -86,10 +86,9 @@
                                     <td>{{ $item['status'] }}</td>
                                     <td><button href="#"
                                             wire:click="calling({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}')"
-                                            wire:loading.attr="disabled" role="button" type="button" class="btn ms-4"
-                                            style="color: red">
+                                            role="button" type="button" class="btn ms-4 panggil" style="color: red"
+                                            x-bind:disabled="{{ $isButtonDisabled }}">
                                             <i class="fa-solid fa-microphone"></i>
-                                            <span wire:loading>...</span>
                                         </button>
                                     </td>
                                 </tr>
@@ -103,3 +102,6 @@
         </div>
     </div>
 </div>
+
+{{-- <span wire:loading>...</span> --}}
+{{-- wire:loading.attr="disabled" --}}

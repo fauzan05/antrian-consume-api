@@ -2,9 +2,8 @@
 
 namespace App\Livewire;
 
-
-use App\Events\CurrentQueuesEvent;
-use App\Events\QueuesMenusEvent;
+use App\Jobs\CallQueueJob;
+use Carbon\Carbon;
 use Livewire\Attributes\On; 
 use Illuminate\Support\Facades\Broadcast;
 use Livewire\Component;
@@ -12,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class QueuesMenus extends Component
 {
+    public $isButtonDisabled = false;
     public $token;
     public $user;
     public $queues;
@@ -46,17 +46,21 @@ class QueuesMenus extends Component
 
     public function calling($id, $number, $service_name)
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put('http://127.0.0.1:8000/api/queues/' . $id, [
-            'status' => 'called',
+        $this->isButtonDisabled = true;
+        $data = [
+            'id' => $id,
+            'number' => $number,
+            'service_name' => $service_name,
+            'token' => $this->token,
             'counter_id' => $this->counter_id
-        ]);
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $data = [$number, $service_name, $response['data'][0]['link-audio']];
-        Broadcast(new QueuesMenusEvent());
-        Broadcast(new CurrentQueuesEvent($data));
+        ];
+        CallQueueJob::dispatch($data);
+    }
+
+    #[On('buttonState')]
+    public function buttonState()
+    {
+        $this->isButtonDisabled = false;
     }
 
     public function getCurrentIdCounter()
