@@ -5,6 +5,7 @@ namespace App\Livewire;
 
 use App\Events\CurrentQueuesEvent;
 use App\Events\QueuesMenusEvent;
+use Livewire\Attributes\On; 
 use Illuminate\Support\Facades\Broadcast;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
@@ -42,7 +43,8 @@ class QueuesMenus extends Component
         $this->getQueue();
         $this->getCurrentQueue();
     }
-    public function panggil($id, $number, $service_name)
+
+    public function calling($id, $number, $service_name)
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json',

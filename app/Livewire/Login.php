@@ -27,7 +27,7 @@ class Login extends Component
             $response->body();
             // dd($response['error']['error_message']);
             $this->message = $response['error']['error_message'];
-            $this->reset('password');
+            $this->reset('username','password');
             return $this->render();
         }
         if ($response->unprocessableEntity()) {

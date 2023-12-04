@@ -8,6 +8,6 @@
 @push('js')
     <script src="{{ asset('js/clock.js') }}"></script>
     @vite('resources/js/app.js')
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/call-queue.js') }}"></script>
     <script src="{{ asset('bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js') }}"></script>
 @endpush

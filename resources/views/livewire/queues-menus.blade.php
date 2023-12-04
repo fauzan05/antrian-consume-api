@@ -84,11 +84,14 @@
                                     <td>{{ $item['number'] }}</td>
                                     <td>{{ $item['service_name'] }}</td>
                                     <td>{{ $item['status'] }}</td>
-                                    <td><a href="#"
-                                            wire:click.prevent="panggil({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}')"
-                                            role="button" class="ms-4" aria-disabled="true" style="color: red"
-                                            disabled>
-                                            <i class="fa-solid fa-microphone"></i> </a></td>
+                                    <td><button href="#"
+                                            wire:click="calling({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}')"
+                                            wire:loading.attr="disabled" role="button" type="button" class="btn ms-4"
+                                            style="color: red">
+                                            <i class="fa-solid fa-microphone"></i>
+                                            <span wire:loading>...</span>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
