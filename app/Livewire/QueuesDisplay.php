@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Events\ButtonStateEvent;
+use Illuminate\Support\Facades\Broadcast;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\On; 
@@ -22,16 +24,23 @@ class QueuesDisplay extends Component
             'echo:services-menus-channel,ServicesMenusEvent' => 'getQueuesInfo',
         ];
     }
+    #[On('buttonState')]
+    public function buttonState($counter_id)
+    {
+        // dd($currentQueue[0]);
+        Broadcast(new ButtonStateEvent($counter_id));
+    }
+    
     public function getQueuesInfo()
     {
         $this->getCurrentQueue();
     }
 
     #[On('currentQueueUpdated')]
-    public function getEventCurrentQueue($data)
+    public function getEventCurrentQueue($queueUpdated)
     {
-        $this->nextQueue = $data[0];
-        $this->nextService = $data[1];
+        $this->nextQueue = $queueUpdated[0];
+        $this->nextService = $queueUpdated[1];
     }
 
     public function getCurrentQueue()

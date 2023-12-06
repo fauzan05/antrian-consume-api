@@ -15,6 +15,7 @@
         </div>
     </div>
     <hr>
+    <input id="counter_id" value="{{ $counter_id }}" hidden>
     <div class="col-12">
         <div class="row d-flex flex-row justify-content-center align-items-start">
             <div class="col-3 m-3">
@@ -54,6 +55,7 @@
                             <div class="card-body">
                                 <h5>Antrian Selanjutnya <i class="fa-solid fa-user-clock"></i></h5>
                                 <hr>
+                                <h5>{{ $nextQueue }}</h5>
                             </div>
                         </div>
                     </div>
@@ -102,6 +104,5 @@
         </div>
     </div>
 </div>
-
 {{-- <span wire:loading>...</span> --}}
 {{-- wire:loading.attr="disabled" --}}

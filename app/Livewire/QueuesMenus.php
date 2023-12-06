@@ -35,13 +35,14 @@ class QueuesMenus extends Component
         return [
             'echo:queues-menus-channel,QueuesMenusEvent' => 'getQueuesInfo',
             'echo:services-menus-channel,ServicesMenusEvent' => 'getQueuesInfo',
+            // 'echo:button-state-channel,ButtonStateEvent' => 'getQueuesInfo'
         ];
     }
 
     public function getQueuesInfo()
     {
-        $this->getQueue();
         $this->getCurrentQueue();
+        $this->getQueue();
     }
 
     public function calling($id, $number, $service_name)
@@ -55,12 +56,6 @@ class QueuesMenus extends Component
             'counter_id' => $this->counter_id
         ];
         CallQueueJob::dispatch($data);
-    }
-
-    #[On('buttonState')]
-    public function buttonState()
-    {
-        $this->isButtonDisabled = false;
     }
 
     public function getCurrentIdCounter()

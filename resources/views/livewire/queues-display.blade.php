@@ -16,7 +16,6 @@
             </div>
         </div>
         <div class="col-6 border border-warning" style="height: 60%">
-            
         </div>
         <div class="col-12 g-0 d-flex border justify-content-center align-items-center border border-danger"
             style="height: 40%">
