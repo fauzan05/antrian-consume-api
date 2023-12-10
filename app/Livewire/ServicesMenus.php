@@ -20,7 +20,10 @@ class ServicesMenus extends Component
     {
         $response = Http::get('http://localhost:8000/api/services');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->services = $response['data'];
+        $response = array_filter($response['data'], function($var){
+            return $var['role'] == 'poly';
+        });
+        $this->services = $response;
     }
     
     public function createQueue($id)

@@ -27,7 +27,6 @@ class QueuesDisplay extends Component
     #[On('buttonState')]
     public function buttonState($counter_id)
     {
-        // dd($currentQueue[0]);
         Broadcast(new ButtonStateEvent($counter_id));
     }
     
@@ -45,7 +44,7 @@ class QueuesDisplay extends Component
 
     public function getCurrentQueue()
     {
-        $response = Http::get('http://localhost:8000/api/counters/current-queue');
+        $response = Http::get('http://localhost:8000/api/queues/counters/current-queue');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->currentQueues = $response['data'];
     }

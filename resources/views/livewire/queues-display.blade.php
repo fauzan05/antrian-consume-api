@@ -21,9 +21,9 @@
             style="height: 40%">
             <div class="row d-flex border justify-content-around align-items-center" style="height:100%; width:100%;">
                 @foreach ($currentQueues as $item)
-                    <div class="col-3 mx-2 d-flex flex-column rounded justify-content-center bg-success text-center"
-                        style="height: 25vh; width: 30vh;">
-                        <h3 class="text-white">{{ $item['name'] }}</h3>
+                    <div class="col-3 mx-1 d-flex flex-column rounded justify-content-center bg-success text-center"
+                        style="height: 20vh; width: 20vh;">
+                        <h5 class="text-white">{{ $item['name'] }}</h5>
                         <hr>
                         <h1 class="text-white">
                             {{ $item['number'] }}

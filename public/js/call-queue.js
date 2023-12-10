@@ -56,11 +56,12 @@ function panggil(audioFiles) {
         audio.play();
         currentAudioIndex++;
       } else if (currentAudioIndex >= audioFiles[0].length-3 ){
-        currentQueue.push(counterId); // array index ke-0
+        // currentQueue.push(counterId); // array index ke-0
         Livewire.dispatch('buttonState', { counter_id: counterId });
         audioFiles.shift();
         isPlaying = false;
         console.log(audioFiles.length); // mengetahui sisa audio antrian di dalam array
+        console.log(counterId);
         if (audioFiles.length > 0) {
           panggil(audioFiles);
         } else {

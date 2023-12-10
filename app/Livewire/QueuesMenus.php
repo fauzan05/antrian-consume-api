@@ -3,16 +3,17 @@
 namespace App\Livewire;
 
 use App\Jobs\CallQueueJob;
-use Carbon\Carbon;
-use Livewire\Attributes\On; 
-use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Http\Client\Pool;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\On;
 
 class QueuesMenus extends Component
 {
+    public $currentPage = 1;
     public $isButtonDisabled = false;
     public $token;
+    public $serviceRole;
     public $user;
     public $queues;
     public $counters;
@@ -25,8 +26,6 @@ class QueuesMenus extends Component
     {
         $this->user = $user;
         $this->token = $token;
-        $this->getCurrentQueue();
-        $this->getCurrentIdCounter();
         $this->getQueue();
     }
 
@@ -41,36 +40,48 @@ class QueuesMenus extends Component
 
     public function getQueuesInfo()
     {
-        $this->getCurrentQueue();
         $this->getQueue();
     }
 
-    public function calling($id, $number, $service_name)
+    public function calling($id, $number, $service_name, $counter_id)
     {
         $this->isButtonDisabled = true;
-        $data = [
-            'id' => $id,
-            'number' => $number,
-            'service_name' => $service_name,
-            'token' => $this->token,
-            'counter_id' => $this->counter_id
-        ];
-        CallQueueJob::dispatch($data);
+            $data = [
+                'id' => $id,
+                'number' => $number,
+                'service_name' => $service_name,
+                'token' => $this->token,
+                'counter_id' => $this->counter_id,
+                'service_role' => $this->serviceRole
+            ];
+            CallQueueJob::dispatch($data)->onQueue('default');
     }
 
-    public function getCurrentIdCounter()
-    {
-        $response = Http::get('http://localhost:8000/api/counters/users/' . $this->user['id']);
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->counter_id = $response['data']['id'];
-    }
     public function getQueue()
     {
-        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->user['id']);
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        // dd($response->{'data'});
-        $this->queues = $response['data'];
-        $this->process($this->queues);
+        $responses = Http::pool(fn (Pool $pool) => [
+            $pool->get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '/current-queue'),
+            $pool->get('http://localhost:8000/api/counters/users/' . $this->user['id']),
+            $pool->get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage)
+        ]);
+        $responses[0] = json_decode($responses[0]->body(), JSON_OBJECT_AS_ARRAY);
+        $responses[1] = json_decode($responses[1]->body(), JSON_OBJECT_AS_ARRAY);
+        $responses[2] = json_decode($responses[2]->body(), JSON_OBJECT_AS_ARRAY);
+        // dd($responses[2]['data_paginate']['data']);
+        $this->counters = $responses[0]['data'];
+        $this->counter_id = $responses[1]['data']['id'];
+        $this->serviceRole = $responses[1]['data']['service']['role'];
+        $this->queues = $responses[2]['data_paginate']['data'];
+        // dd($this->counters);
+        if (!$responses[2]['data']) {
+            $this->remainQueue = 0;
+            $this->totalQueue = 0;
+            $this->currentQueue = 0;
+            $this->nextQueue = 0;
+        } else {
+            // dd($responses[2]['data']);
+            $this->process($responses[2]['data']);
+        }
     }
     public function process($data)
     {
@@ -88,12 +99,19 @@ class QueuesMenus extends Component
             $this->nextQueue = $this->currentQueue + 1;
         }
     }
-    public function getCurrentQueue()
+
+    #[On('buttonState')]
+    public function getButtonState()
     {
-        $response = Http::get('http://localhost:8000/api/counters/current-queue');
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->counters = $response['data'];
+        $this->isButtonDisabled = false;
     }
+
+    #[On('page')]
+    public function getPage($pageId)
+    {
+        $this->currentPage = $pageId;
+    }
+
     public function render()
     {
         return view('livewire.queues-menus');

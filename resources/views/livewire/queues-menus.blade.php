@@ -79,24 +79,53 @@
                         <tbody>
                             @php
                                 $i = 1;
+                                if($queues != null):
+                            foreach ($queues as $item):
                             @endphp
-                            @foreach ($queues as $item)
                                 <tr>
                                     <th scope="row">{{ $i++ }}</th>
                                     <td>{{ $item['number'] }}</td>
                                     <td>{{ $item['service_name'] }}</td>
                                     <td>{{ $item['status'] }}</td>
-                                    <td><button href="#"
-                                            wire:click="calling({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}')"
+                                    <td><button href="#" id="{{ $counter_id }}"
+                                            wire:click="calling({{ $item['id'] }}, '{{ $item['number'] }}', '{{ $item['service_name'] }}', '{{ $counter_id }}')"
                                             role="button" type="button" class="btn ms-4 panggil" style="color: red"
                                             x-bind:disabled="{{ $isButtonDisabled }}">
                                             <i class="fa-solid fa-microphone"></i>
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @php
+                            endforeach;
+                            endif;
+                            @endphp
                         </tbody>
                     </table>
+                </div>
+                <div class="col-12 mt-3 d-flex align-items-center justify-content-center">
+                    @php
+                            if($queues != null):
+                    @endphp
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item {{ ($currentPage == 1) ? 'disabled' : '' }}" id="previous">
+                                <a href="#" class="page-link">Sebelumnya</a>
+                            </li>
+                            
+                            @for ($i = 1; $i <= $queues['last_page']; $i++)
+                                <li class="page-item index-page {{($currentPage == $i) ? 'active' : ''}}" >
+                                    <a id="{{ $i }}" class="page-link"
+                                        href="#">{{ $i }}</a>
+                                </li>
+                            @endfor
+                            <li class="page-item {{ ($currentPage == $queues['last_page']) ? 'disabled' : '' }}" id="next">
+                                <a href="#" class="page-link">Selanjutnya</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    @php
+                    endif;
+                            @endphp
                 </div>
                 <div>
                 </div>
@@ -104,5 +133,3 @@
         </div>
     </div>
 </div>
-{{-- <span wire:loading>...</span> --}}
-{{-- wire:loading.attr="disabled" --}}

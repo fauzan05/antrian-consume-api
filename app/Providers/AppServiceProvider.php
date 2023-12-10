@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Blade::withoutDoubleEncoding();
         DB::listen(function (QueryExecuted $query) {
             Log::info($query->sql);
         });

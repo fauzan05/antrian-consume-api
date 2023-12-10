@@ -23,6 +23,7 @@ class CallQueueJob implements ShouldQueue
     public $service_name;
     public $token;
     public $counter_id;
+    public $service_role;
 
     /**
      * Create a new job instance.
@@ -34,6 +35,7 @@ class CallQueueJob implements ShouldQueue
         $this->service_name = $data['service_name'];
         $this->token = $data['token'];
         $this->counter_id = $data['counter_id'];
+        $this->service_role = $data['service_role'];
     }
 
     /**
@@ -49,7 +51,7 @@ class CallQueueJob implements ShouldQueue
             'counter_id' => $this->counter_id,
         ]);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $data = [$this->number, $this->service_name, $this->counter_id, $response['data'][0]['link-audio']];
+        $data = [$this->number, $this->service_name, $this->counter_id, (($this->service_role == "poly") ? $response['data'][0]['link-audio-poly'] : $response['data'][0]['link-audio-registration'])];
         Broadcast(new QueuesMenusEvent());
         Broadcast(new CurrentQueuesEvent($data));
     }
