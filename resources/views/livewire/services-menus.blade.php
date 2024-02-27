@@ -1,4 +1,9 @@
 <div class="container" style="height: 100vh;">
+    @if(session('status'))
+    <div class="alert alert-danger my-5 text-center" role="alert">
+       {{session('status')}}
+    </div>
+    @endif
     <div class="p-0 d-flex justify-content-center align-items-center">
         <div class="row m-5 d-flex justify-content-center align-items-center">
             @foreach ($services as $service)

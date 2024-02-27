@@ -27,13 +27,24 @@ class AuthController extends Controller
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
         ])->get('http://127.0.0.1:8000/api/users/current');
+        if($response->unauthorized()){
+            return redirect('/login');
+        }
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         return view('dashboard.operator.home', ['user' => $response['data']]);
     }
 
-    public function getAdminView()
+    public function getAdminView(Request $request)
     {
-        return view('dashboard.admin.home');
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $request->cookie('token')
+        ])->get('http://127.0.0.1:8000/api/users/current');
+        if($response->unauthorized()){
+            return redirect('/login');
+        }
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        return view('dashboard.admin.home', ['user' => $response['data']]);
     }
 
     public function logout(Request $request)

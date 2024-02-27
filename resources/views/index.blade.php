@@ -13,7 +13,7 @@
                 <img src="{{ asset('storage/img/queue.jpg') }}" class="img-fluid" alt="">
             </div>
             <div class="col-5 mt-5">
-                <a href="http://127.0.0.1:8001/login">
+                <a href="http://localhost:8001/login">
                     <div class="col-12 m-3">
                         <div class="card shadow-click bg-success text-center" style="width: 100%;">
                             <div class="card-body">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="http://127.0.0.1:8001/queues">
+                <a href="http://localhost:8001/queues">
                     <div class="col-12 m-3">
                         <div class="card shadow-click bg-success text-center" style="width: 100%;">
                             <div class="card-body">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="http://127.0.0.1:8001/services">
+                <a href="http://localhost:8001/services">
                     <div class="col-12 m-3">
                         <div class="card shadow-click bg-success text-center" style="width: 100%;">
                             <div class="card-body">

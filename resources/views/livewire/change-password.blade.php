@@ -33,7 +33,7 @@
                                     <label for="exampleInputEmail1" class="form-label">Password
                                         Lama</label>
                                     <input type="password" name="old_password" class="form-control"
-                                        wire:model="old_password" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        wire:model.live="old_password" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     @error('old_password')
                                         <span class="error text-danger">{{ $message }} </span>
                                     @enderror
@@ -41,7 +41,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Password
                                         Baru</label>
-                                    <input type="password" class="form-control" wire:model="new_password"
+                                    <input type="password" class="form-control" wire:model.live="new_password"
                                         id="exampleInputEmail1" aria-describedby="emailHelp">
                                     @error('new_password')
                                         <span class="error text-danger">{{ $message }} </span>
@@ -50,7 +50,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Verifikasi
                                         Password Baru</label>
-                                    <input type="password" class="form-control" wire:model="new_password_confirmation"
+                                    <input type="password" class="form-control" wire:model.live="new_password_confirmation"
                                         id="exampleInputEmail1" aria-describedby="emailHelp">
                                     @error('new_password_confirmation')
                                         <span class="error text-danger">{{ $message }} </span>

@@ -1,14 +1,15 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin-dashboard')
 
 @section('title', 'Dashboard Admin')
 @push('css')
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 @endpush
 
 @section('content')
-    <livewire:get-counter/>
+@php
+$token = Cookie::get('token');
+$darkMode = Cookie::get('dark-mode');
+@endphp
+<livewire:menu-controller :user=$user :token=$token :darkMode="$darkMode">
 @endsection
 
-@push('js')
-    <script src="{{ asset('js/main.js') }}"></script>
-@endpush

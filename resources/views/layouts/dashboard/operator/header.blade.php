@@ -18,12 +18,12 @@
                             <div class="col-12 d-flex flex-column mt-3">
                                 <ul class="nav mb-auto nav-pills">
                                     <li class="nav-item ms-2" style="width: 100%">
-                                        <a href="{{ url('operator') }}" class="nav-link text-white">
+                                        <a href="{{ url('operator') }}" class="nav-link text-white sidebar-button">
                                             <i class="fa-solid fa-list-ol m-3"></i>Antrian
                                         </a>
                                     </li>
                                     <li class="nav-item ms-2" style="width: 100%">
-                                        <a href="{{ url('operator/pengaturan') }}" class="nav-link text-white">
+                                        <a href="{{ url('operator/pengaturan') }}" class="nav-link text-white sidebar-button">
                                             <i class="fa-solid fa-gear m-3"></i>Pengaturan
                                         </a>
                                     </li>

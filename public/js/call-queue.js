@@ -20,16 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
       dataQueue.push(e['data'][1]); // data service_name
       dataQueue.push(e['data'][0]); // data number queue
       audioFiles.push(dataQueue);
-      
+      // console.log(e);
       // audioFiles.push(e['data'][2]);
       // console.log(audioFiles[0][audioFiles[0].length-1]);
       if (audioFiles.length > 0 && isPlaying == false) {
-        console.log("terpanggil");
+        // console.log("terpanggil");
         panggil(audioFiles);
       }
       // console.log(audioFiles[0][(audioFiles[0]).length-2]);
     });
-});
+
 
 
 
@@ -42,7 +42,7 @@ function panggil(audioFiles) {
   const currentQueue = [];
 
   Livewire.dispatch('currentQueueUpdated', { queueUpdated: [number, services] });
-  // console.log(audioFiles);
+  console.log(audioFiles);
   var audio = new Audio(audioFiles[0][currentAudioIndex]);
   if (currentAudioIndex < audioFiles[0].length) {
     audio.src = audioFiles[0][currentAudioIndex];
@@ -72,3 +72,5 @@ function panggil(audioFiles) {
     });
   }
 }
+
+});

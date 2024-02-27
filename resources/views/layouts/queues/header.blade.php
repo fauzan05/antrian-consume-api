@@ -5,7 +5,9 @@
                 <img src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="Bootstrap" width="40" height="40">
                 <span class="px-3">Puskesmas Example</span>
             </a>
-            <h3 id="time" class="text-white"></h3>
+            <div class="border rounded">
+                <h3 id="time" class="text-white m-2"></h3>
+            </div>
         </div>
     </nav>
 </header>

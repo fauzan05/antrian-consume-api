@@ -13,9 +13,11 @@ class QueuesDisplay extends Component
     public $nextQueue;
     public $nextService;
     public $currentQueues;
+    public $text_footer_display;
     public function mount()
     {
         $this->getCurrentQueue();
+        $this->appSettings();
     }
     public function getListeners()
     {
@@ -24,6 +26,7 @@ class QueuesDisplay extends Component
             'echo:services-menus-channel,ServicesMenusEvent' => 'getQueuesInfo',
         ];
     }
+    
     #[On('buttonState')]
     public function buttonState($counter_id)
     {
@@ -47,6 +50,13 @@ class QueuesDisplay extends Component
         $response = Http::get('http://localhost:8000/api/queues/counters/current-queue');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->currentQueues = $response['data'];
+    }
+
+    public function appSettings()
+    {
+        $response = Http::get('http://localhost:8000/api/admin/settings');
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $this->text_footer_display = $response['data']['text_footer_display'];
     }
     public function render()
     {

@@ -28,9 +28,15 @@ class ServicesMenus extends Component
     
     public function createQueue($id)
     {
-        Http::post('http://localhost:8000/api/queues', [
-            'service_id' => $id
+        $response = Http::post('http://localhost:8000/api/queues', [
+            'poly_service_id' => $id
         ]);
+        if($response->forbidden()) {
+            $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+            session()->now('status', $response['error']['error_message']);
+            return;
+        }
+        session()->now('status', 'Berhasil membuat tiket antrian');
         Broadcast(new ServicesMenusEvent());
     }
     public function render()

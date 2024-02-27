@@ -5,6 +5,7 @@ use App\Events\TestingWebsockets;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\ServiceController;
+use App\Livewire\AdminDashboardContent;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Http;
@@ -31,7 +32,6 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get('/queues', [QueueController::class, 'index']);
-
 Route::get('/error', function() {
     return response()->view('errors.500', [], 500);
 });

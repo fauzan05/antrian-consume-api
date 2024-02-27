@@ -1,4 +1,4 @@
-<footer>
+<footer style="padding-top: 30px">
     <nav class="navbar mt-2 bg-body-tertiary">
         <div class="container-fluid">
             <span class="ms-3 text-body-secondary ">© 2023 Antrian Demo</span>

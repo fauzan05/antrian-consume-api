@@ -1,5 +1,5 @@
 var counter_id = document.getElementById('counter_id').value;
-console.log(counter_id);
+// console.log(counter_id);
 $('.panggil').on('click', function () {
         $('.panggil').prop('disabled', true);
 });
@@ -7,7 +7,7 @@ $('.panggil').on('click', function () {
 document.addEventListener("DOMContentLoaded", function () {
     Echo.channel('button-state-channel')
         .listen('ButtonStateEvent', (e) => {
-            console.log(e['data']);
+            // console.log(e['data']);
             if (e['data'] == counter_id) {
                 $('.panggil').prop('disabled', false);
                 // console.log("Button Disabled : " + counter_id);

@@ -71,7 +71,7 @@ class QueuesMenus extends Component
         $this->counters = $responses[0]['data'];
         $this->counter_id = $responses[1]['data']['id'];
         $this->serviceRole = $responses[1]['data']['service']['role'];
-        $this->queues = $responses[2]['data_paginate']['data'];
+        $this->queues = $responses[2]['data_paginate'];
         // dd($this->counters);
         if (!$responses[2]['data']) {
             $this->remainQueue = 0;
@@ -100,6 +100,13 @@ class QueuesMenus extends Component
         }
     }
 
+    public function getSingleQueues()
+    {
+        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage);
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $this->queues = $response['data_paginate'];
+    }
+
     #[On('buttonState')]
     public function getButtonState()
     {
@@ -110,6 +117,7 @@ class QueuesMenus extends Component
     public function getPage($pageId)
     {
         $this->currentPage = $pageId;
+        $this->getSingleQueues();
     }
 
     public function render()

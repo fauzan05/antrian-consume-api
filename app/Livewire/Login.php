@@ -28,7 +28,7 @@ class Login extends Component
             // dd($response['error']['error_message']);
             $this->message = $response['error']['error_message'];
             $this->reset('username','password');
-            return $this->render();
+            return;
         }
         if ($response->unprocessableEntity()) {
             return redirect('unprocess');
@@ -37,10 +37,16 @@ class Login extends Component
         $role = $response['data']['role'];
         if ($role == 'operator') {
             Cookie::queue('token', $response['token'], 1440);
+            if(!Cookie::get('dark-mode')){
+                Cookie::queue('dark-mode', (boolean)false);
+            }
             return redirect('operator')->with('token', $response['token']);
         } else {
             Cookie::queue('token', $response['token'], 1440);
-            return redirect('admin');
+            if(!Cookie::get('dark-mode')){
+                Cookie::queue('dark-mode', (boolean)false);
+            }
+            return redirect('admin')->with('token', $response['token'] );
         }
     }
     public function render()
