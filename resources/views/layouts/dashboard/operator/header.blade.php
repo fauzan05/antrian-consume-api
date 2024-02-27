@@ -7,7 +7,7 @@
                     <div class="col-3 d-flex flex-row align-items-center m-4">
                         <img src="{{ asset('storage/img/logo-puskesmas.png') }}" class="me-3 mb-2" alt=""
                             style="width: 100%" />
-                        <h5>Puskesmas Example</h5>
+                        <h5>Rumah Sakit Demo</h5>
                     </div>
                     <div class="d-flex flex-column justify-content-between" style="min-height: 80vh;">
                         <hr>

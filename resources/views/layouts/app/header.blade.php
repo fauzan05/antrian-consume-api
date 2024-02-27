@@ -3,7 +3,7 @@
         <div class="container">
             <a class="navbar-brand text-white" href="{{ url('/') }}">
                 <img src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="Bootstrap" width="40" height="40">
-                <span class="px-3">Puskesmas Example</span>
+                <span class="px-3">Rumah Sakit Demo</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
