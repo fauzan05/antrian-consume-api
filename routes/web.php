@@ -35,7 +35,8 @@ Route::get('/queues', [QueueController::class, 'index']);
 Route::get('/error', function() {
     return response()->view('errors.500', [], 500);
 });
-
+Route::get('/print-queue/{idQueue}', [QueueController::class, 'print'])->where('idQueue', '[0-9]+');
+// Route::get('/test-print', [QueueController::class, 'testPrint']);
 Route::get('/welcome', function(){
     return view('welcome');
 });

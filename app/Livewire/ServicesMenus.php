@@ -36,8 +36,9 @@ class ServicesMenus extends Component
             session()->now('status', $response['error']['error_message']);
             return;
         }
-        session()->now('status', 'Berhasil membuat tiket antrian');
         Broadcast(new ServicesMenusEvent());
+        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        $this->redirect('/print-queue/' . $response['data']['id']);
     }
     public function render()
     {
