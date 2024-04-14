@@ -2,14 +2,11 @@
 
 namespace App\Livewire;
 
-use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class AdminSettingsContent extends Component
 {
@@ -38,11 +35,12 @@ class AdminSettingsContent extends Component
     public $color;
     public $is_delete_video = false;
     public $is_delete_schedules = false;
+    public $api_url;
 
     public function mount($token)
     {
         $this->token = $token;
-        $this->getSelectedVideo();
+        $this->api_url = config('services.api_url');
         $this->showOperationalHours();
         $this->setFirstStateOperationalHours();
         $this->getSelectedIdentity();
@@ -59,33 +57,28 @@ class AdminSettingsContent extends Component
         endforeach;
     }
 
-
     public function isDeleteVideo()
     {
         $this->is_delete_video = (bool)$this->is_delete_video ? (bool)false : (bool)true;
         $this->deleteVideo();
-        $this->getSelectedVideo();
     }
 
     public function isCloseVideo()
     {
         if($this->is_delete_video){
             $this->is_delete_video = (bool)$this->is_delete_video ? (bool)false : (bool)true;
-            $this->getSelectedVideo();
         }
     }
     public function isDeleteSchedules()
     {
         $this->is_delete_schedules = (bool)$this->is_delete_schedules ? (bool)false : (bool)true;
         $this->deleteAllSchedule();
-        $this->getSelectedVideo();
     }
 
     public function isCloseSchedules()
     {
         if($this->is_delete_schedules){
             $this->is_delete_schedules = (bool)$this->is_delete_schedules ? (bool)false : (bool)true;
-            $this->getSelectedVideo();
         }
     }
 
@@ -94,27 +87,25 @@ class AdminSettingsContent extends Component
         if(empty($this->selected_video)){
             return session()->flash('status_delete_video', ['color' => 'danger','message' => 'Tidak ada video yang terhapus']);
         }
-        $response = Http::withHeaders([
+        Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->delete('http://127.0.0.1:8000/api/files/videos/' . trim($this->selected_video));
-        // dd($response->body());
+        ])->delete($this->api_url . '/files/videos/' . trim($this->selected_video));
         session()->flash('status_delete_video', ['color' => 'success', 'message' => 'Berhasil menghapus video']);
     }
 
     public function updateSettings()
     {
         $this->validate();
-        // dd($this->video, $this->name, $this->address, $this->footerText, $this->footerColor);
         if (!empty($this->video)) {
             $path = $this->video->getRealPath();
             $originalName = $this->video->getClientOriginalName();
-            Http::delete('http://127.0.0.1:8000/api/files/videos');
+            Http::delete($this->api_url . '/files/videos');
             Http::attach(
                 'video_file',
                 file_get_contents($path),
                 $originalName
-            )->post('http://127.0.0.1:8000/api/admin/settings/videos');
+            )->post($this->api_url . '/app/videos');
         }
         if (!empty(trim($this->name)) || !empty(trim($this->address))) {
             Validator::make(
@@ -125,7 +116,7 @@ class AdminSettingsContent extends Component
             Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->token
-            ])->put('http://127.0.0.1:8000/api/admin/settings/identity', [
+            ])->put($this->api_url . '/admin/settings/identity', [
                 'name_of_health_institute' => trim($this->name),
                 'address_of_health_institute' => trim($this->address)
             ]);
@@ -139,7 +130,7 @@ class AdminSettingsContent extends Component
             Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->token
-            ])->put('http://127.0.0.1:8000/api/admin/settings/text-footer', [
+            ])->put($this->api_url . '/admin/settings/text-footer', [
                 'text_footer_display' => trim($this->footerText)
             ]);
         }
@@ -153,7 +144,7 @@ class AdminSettingsContent extends Component
             Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->token
-            ])->put('http://127.0.0.1:8000/api/admin/settings/color-footer', [
+            ])->put($this->api_url . '/admin/settings/color-footer', [
                 'display_footer_color' => trim($this->footerColor)
             ]);
         }
@@ -173,17 +164,13 @@ class AdminSettingsContent extends Component
 
     public function resetSchedule()
     {
-        // // dd($this->is_active);
         foreach ($this->jam_buka as $key => $item) :
             unset($this->jam_buka[$key]);
         endforeach;
         foreach ($this->jam_tutup as $key => $item) :
             unset($this->jam_tutup[$key]);
         endforeach;
-        // foreach($this->is_active as $key => $item):
-        //     unset($this->is_active[$key]);
-        // endforeach;
-        // dd($this->jam_buka, $this->jam_tutup);
+    
         $this->showOperationalHours();
         foreach ($this->operationalHours as $item) :
             $this->viewOpen[] = $item['open'];
@@ -198,14 +185,13 @@ class AdminSettingsContent extends Component
         foreach ($this->jam_buka as $id => $openValue) {
             $this->schedule[$id] = [$openValue, $this->jam_tutup[$id], $this->is_active[$id]];
         }
-        $response = Http::withHeaders([
+        Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->put('http://127.0.0.1:8000/api/admin/settings/operational-hours', [
+        ])->put($this->api_url . '/app/operational-hours', [
             'data' => $this->schedule
         ]);
-        // $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        // dd($response);
+
         session()->flash('status', ['page' => 5, 'message' => 'Berhasil mengubah jadwal operasional']);
         $this->redirect('/admin', );
     }
@@ -220,7 +206,7 @@ class AdminSettingsContent extends Component
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->put('http://127.0.0.1:8000/api/users/update', [
+        ])->put($this->api_url . '/users/update', [
             'old_password' => $this->password_lama,
             'new_password' => $this->password_baru,
             'new_password_confirmation' => $this->konfirmasi_password_baru
@@ -244,34 +230,28 @@ class AdminSettingsContent extends Component
 
     public function deleteAllSchedule()
     {
-        $response = Http::withHeaders([
+        Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->delete('http://127.0.0.1:8000/api/admin/settings/operational-hours');
+        ])->delete($this->api_url . '/app/operational-hours');
         session()->flash('status_delete_schedules', ['color' => 'success', 'message' => 'Berhasil menghapus jadwal operasional']);
         $this->showOperationalHours();
     }
 
-    public function getSelectedVideo()
-    {
-        $response = Http::get('http://127.0.0.1:8000/api/admin/settings/selected-video');
-        $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->selected_video = $response['data'] ?? null;
-    }
-
     public function getSelectedIdentity()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/admin/settings');
+        $response = Http::get($this->api_url . '/app');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->name = $response['data']['name_of_health_institute'] ?? null;
         $this->address = $response['data']['address_of_health_institute'] ?? null;
         $this->footerText = $response['data']['text_footer_display'] ?? null;
         $this->footerColor = $response['data']['display_footer_color'] ?? $this->footerColor;
+        $this->selected_video = $response['data']['selected_video'] ?? null;
     }
 
     public function showOperationalHours()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/admin/settings/operational-hours');
+        $response = Http::get($this->api_url . '/app/operational-hours');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->operationalHours = $response['data'] ?? null;
     }

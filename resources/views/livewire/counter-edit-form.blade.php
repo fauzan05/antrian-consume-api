@@ -8,7 +8,6 @@
         </div>
     @endif
     <form wire:submit="updateCounter">
-        {{-- @csrf --}}
         <div class="forms gap-3">
             <div>
                 <label for="exampleFormControlInput1" class="form-label">Nama Loket</label>

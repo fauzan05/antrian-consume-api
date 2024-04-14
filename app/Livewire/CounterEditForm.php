@@ -28,38 +28,36 @@ class CounterEditForm extends Component
     public $counter;
     public $users;
     public $services;
+    public $api_url;
 
     public function mount($currentDataEdit, $token)
     {
+        $this->token = $token;
+        $this->api_url = config('services.api_url');
         $this->counter = $currentDataEdit['counter'];
         $this->services = $currentDataEdit['services'];
         $this->users = $currentDataEdit['users'];
-        $this->token = $token;
-        // $this->getCounter();
         $this->setCurrentEditForm();
     }
 
     public function updateCounter()
     {     
         $this->is_active = (boolean)$this->is_active ? true : false;
-        // dd($this->name, $this->user_id, $this->service_id, $this->is_active); 
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->put('http://127.0.0.1:8000/api/counters/' . $this->id, [
+        ])->put($this->api_url . '/counters/' . $this->id, [
             'name' => $this->name,
             'user_id' => $this->user_id,
             'service_id' => $this->service_id,
             'is_active' => (boolean)$this->is_active
         ]);
 
-        // dd($response->body());
         if($response->unauthorized())
         {
             $this->color = true;
             $this->message = $response['message'];
             session()->flash('status_edit_counter', ['color' => 'danger', 'message' => $this->message]);
-            // $this->reset('name', 'user_id', 'service_id', 'is_active');
             return;
         }
         if($response->conflict())
@@ -68,7 +66,6 @@ class CounterEditForm extends Component
             $this->message = json_decode($response->body(), JSON_OBJECT_AS_ARRAY)['error']['error_message'];
             return session()->flash('status_edit_counter', ['color' => 'danger', 'message' => json_decode($response->body(), JSON_OBJECT_AS_ARRAY)['error']['error_message']]);
         }
-        // dd($response->body());
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         session()->flash('status', ['page' => 2, 'message' => 'Berhasil mengubah ' . $this->counter['name']]);
         $this->redirect('/admin');
@@ -83,7 +80,7 @@ class CounterEditForm extends Component
         Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->delete('http://127.0.0.1:8000/api/counters/' . $this->id);
+        ])->delete($this->api_url . '/counters/' . $this->id);
         session()->flash('status', ['page' => 2, 'message' => 'Berhasil menghapus ' . $this->counter['name']]);
         $this->redirect('/admin');
     }

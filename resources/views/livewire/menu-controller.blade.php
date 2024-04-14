@@ -9,10 +9,10 @@
                 <img class="logo-width" src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="">
             </div>
             <div>
-                <span class="text name">{{ $name_of_institute }}</span>
-                <p class="text-address">
+                <span class="text name" style="font-size: 1rem">{{ $name_of_institute }}</span>
+                {{-- <p class="text-address">
                     {{$address}}
-                </p>
+                </p> --}}
             </div>
         </li>
         <i id="toggle" wire:click="isClosed({{ $active }})"

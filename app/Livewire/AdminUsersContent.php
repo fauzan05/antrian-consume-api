@@ -13,10 +13,12 @@ class AdminUsersContent extends Component
     public $token;
     public $users;
     public $currentUser; // operator yang dipilih
+    public $api_url;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
         $this->getAllUsers();
     }
 
@@ -44,7 +46,7 @@ class AdminUsersContent extends Component
     #[On('user-has-updated')]
     public function getAllUsers()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/users');
+        $response = Http::get($this->api_url . '/users');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->users = $response['data'];
     }
@@ -59,7 +61,7 @@ class AdminUsersContent extends Component
     public function setSessionMessageDelete($data)
     {
         session()->flash('status', ['message' => 'Berhasil menghapus ' . $data]);
-        $response = Http::get('http://127.0.0.1:8000/api/users');
+        $response = Http::get($this->api_url . '/users');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->users = $response['data'];
     }

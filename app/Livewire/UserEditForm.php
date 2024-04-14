@@ -19,10 +19,12 @@ class UserEditForm extends Component
     public $token;
     public $message;
     public $color;
+    public $api_url;
 
     public function mount($user, $token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
         $this->user = $user;
         $this->setCurrentEditForm();
     }
@@ -47,18 +49,16 @@ class UserEditForm extends Component
     {
         $this->rules();
         $this->validate();
-        // dd($this->name, $this->username, $this->old_password, $this->new_password, $this->new_password_confirmation, $this->switch);
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->put('http://127.0.0.1:8000/api/users/' . $this->id, [
+        ])->put($this->api_url . '/users/' . $this->id, [
             'name' => $this->name,
             'username' => $this->username,
             'old_password' => $this->old_password,
             'new_password' => $this->new_password,
             'new_password_confirmation' => $this->new_password_confirmation
         ]);
-        // dd($response->body());
 
         if ($response->unauthorized()) {
             if (!isset($response['message'])) {
@@ -81,9 +81,6 @@ class UserEditForm extends Component
         }
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         session()->flash('status', ['page' => 4, 'message' => 'Berhasil mengubah ' . $this->name]);
-        // session()->flash('status_update_user', ['color' => 'success', 'message' => 'Berhasil mengedit ' . $this->name]);
-        // $this->reset('old_password', 'new_password', 'new_password_confirmation');
-        // $this->dispatch('user-has-updated', data: $this->name);
         return $this->redirect('admin');
     }
 
@@ -97,10 +94,10 @@ class UserEditForm extends Component
 
     public function delete()
     {
-        $response = Http::withHeaders([
+        Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->delete('http://127.0.0.1:8000/api/users/' . $this->id);
+        ])->delete($this->api_url . '/users/' . $this->id);
         // dd($response->body());
         session()->flash('status', ['page' => 4, 'message' => 'Berhasil mengubah ' . $this->name]);
         return $this->redirect('admin', navigate: true);

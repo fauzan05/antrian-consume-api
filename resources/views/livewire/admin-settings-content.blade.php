@@ -97,6 +97,7 @@
                                 style="width: 80%; height: 100%;">
                                 <form class="d-flex flex-column justify-content-center me-3 mt-2"
                                     wire:submit="updateOperationalHours">
+                                    @if($operationalHours)
                                     @foreach ($operationalHours as $key => $item)
                                         <div class="input-group gap-0 no-padding input-group-sm d-flex justify-content-around align-items-center flex-row"
                                             style="width: auto !important;">
@@ -129,6 +130,7 @@
                                         </div>
                                         <hr>
                                     @endforeach
+                                    @endif
                                     <button type="submit" class="btn btn-primary mt-3 mb-3">Simpan</button>
                                     <button type="button" wire:click="resetSchedule()"
                                         class="btn btn-danger mb-3">Reset</button>

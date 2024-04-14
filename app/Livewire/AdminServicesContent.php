@@ -12,10 +12,12 @@ class AdminServicesContent extends Component
     public $token;
     public $services;
     public $currentService; // layanan yang dipilih
+    public $api_url;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
         $this->getAllServices();
     }
 
@@ -44,7 +46,7 @@ class AdminServicesContent extends Component
 
     public function getAllServices()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/services');
+        $response = Http::get($this->api_url . '/services');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->services = $response['data'];
     }

@@ -17,20 +17,22 @@ class AdminDashboardContent extends Component
     public $queuesCount;
     public $usersCount;
     public $servicesCount;
+    public $api_url;
 
     public function mount()
     {
+        $this->api_url = config('services.api_url');
         $this->getAllData();
     }
 
     public function getAllData()
     {
         $responses = Http::pool(fn (Pool $pool) => [
-            $pool->get('http://127.0.0.1:8000/api/queues/counters/current-queue'),
-            $pool->get('http://127.0.0.1:8000/api/services'),
-            $pool->get('http://127.0.0.1:8000/api/users'),
-            $pool->get('http://127.0.0.1:8000/api/counters'),
-            $pool->get('http://127.0.0.1:8000/api/queues/count'),
+            $pool->get($this->api_url . '/queues/counters/current-queue'),
+            $pool->get($this->api_url . '/services'),
+            $pool->get($this->api_url . '/users'),
+            $pool->get($this->api_url . '/counters'),
+            $pool->get($this->api_url . '/queues/count'),
         ]);
         $responses[0] = json_decode($responses[0]->body(), JSON_OBJECT_AS_ARRAY);
         $responses[1] = json_decode($responses[1]->body(), JSON_OBJECT_AS_ARRAY);
@@ -42,10 +44,9 @@ class AdminDashboardContent extends Component
         $this->users = $responses[2]['data'] ?? 0;
         $this->counters = $responses[3]['data'] ?? 0;
         $this->queuesCount = $responses[4]['data'] ?? 0;
-
-        $this->servicesCount = count($responses[1]['data']);
-        $this->usersCount = count($responses[2]['data']);
-        $this->countersCount = count($responses[3]['data']);
+        $this->servicesCount = count($responses[1]['data']) ?? 0;
+        $this->usersCount = count($responses[2]['data']) ?? 0;
+        $this->countersCount = count($responses[3]['data']) ?? 0;
     }
 
     public function render()

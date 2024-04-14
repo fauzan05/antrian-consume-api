@@ -22,20 +22,21 @@ class UserCreateForm extends Component
     public $message;
     public $token;
     public $color;
+    public $api_url;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
     }
 
     public function createUser()
     {
         $this->validate();
-        // dd($this->name, $this->username, $this->password, $this->password_confirmation);
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->post('http://127.0.0.1:8000/api/users/register', [
+        ])->post($this->api_url . '/users/register', [
             'name' => $this->name,
             'username' => $this->username,
             'password' => $this->password,
@@ -60,7 +61,6 @@ class UserCreateForm extends Component
             $this->reset('password', 'password_confirmation');
             return;
         }
-        // dd($response->body());
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         session()->flash('status', ['page' => 4, 'message' => 'Berhasil membuat ' . $this->name]);
         $this->redirect('/admin');

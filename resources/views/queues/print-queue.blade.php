@@ -43,10 +43,16 @@
         </div>
         <hr class="line">
         <div style="margin-bottom: 10px">
-            <span>Nomor Antrian</span>
+            <span>Nomor Antrian Pendaftaran</span>
         </div>
         <div style="margin-bottom: 10px">
             <span> <strong>{{ $selected_queue['registration_number'] }}</strong></span>
+        </div>
+        <div style="margin-bottom: 10px">
+            <span>Nomor Antrian Poli</span>
+        </div>
+        <div style="margin-bottom: 10px">
+            <span> <strong>{{ $selected_queue['poly_number'] }}</strong></span>
         </div>
         <hr class="line">
         <div>

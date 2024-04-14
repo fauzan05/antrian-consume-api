@@ -12,6 +12,7 @@ class ChangePassword extends Component
     public $new_password;
     public $new_password_confirmation;
     public $message;
+    public $api_url;
     protected $rules = [
         'old_password' => 'required|min:3',
         'new_password' => 'required|min:3',
@@ -20,6 +21,7 @@ class ChangePassword extends Component
     public function mount($token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
     }
     public function update()
     {
@@ -27,7 +29,7 @@ class ChangePassword extends Component
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->put('http://localhost:8000/api/users/update', [
+        ])->put($this->api_url . '/users/update-password', [
             'old_password' => $this->old_password,
             'new_password' => $this->new_password,
             'new_password_confirmation' => $this->new_password_confirmation,

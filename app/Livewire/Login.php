@@ -5,27 +5,30 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
-use Illuminate\Http\Request;
 
 class Login extends Component
 {
     public $username;
     public $password;
     public $message;
+    public $api_url;
     protected $rules = [
         'username' => 'required|min:3',
         'password' => 'required|min:3',
     ];
+
+    public function mount() {
+        $this->api_url = config('services.api_url');
+    }
     public function login()
     {
         $this->validate();
-        $response = Http::post('http://localhost:8000/api/users/login', [
+        $response = Http::post($this->api_url . '/users/login', [
             'username' => $this->username,
             'password' => $this->password,
         ]);
         if ($response->unauthorized()) {
             $response->body();
-            // dd($response['error']['error_message']);
             $this->message = $response['error']['error_message'];
             $this->reset('username','password');
             return;

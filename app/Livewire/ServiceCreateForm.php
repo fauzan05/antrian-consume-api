@@ -22,32 +22,31 @@ class ServiceCreateForm extends Component
     public $message;
     public $token;
     public $color;
+    public $api_url;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->api_url = config('services.api_url');
     }
 
     public function createService()
     {
         $this->validate();
-        // dd($this->name, $this->initial, $this->role, $this->description);
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->post('http://127.0.0.1:8000/api/services', [
+        ])->post($this->api_url . '/services', [
             'name' => $this->name,
             'initial' => $this->initial,
             'role' => $this->role,
             'description' => $this->description
         ]);
-        // dd($response->body());
         if($response->unauthorized())
         {
             $this->color = true;
             $this->message = $response['message'];
             session()->flash('status_create_counter', ['color' => 'danger', 'message' => $this->message]);
-            // $this->setCurrentCreateForm();
             return;
         }
         if($response->conflict())
@@ -55,12 +54,9 @@ class ServiceCreateForm extends Component
             $this->color = true;
             $this->message = json_decode($response->body(), JSON_OBJECT_AS_ARRAY)['error']['error_message'];
             session()->flash('status_create_counter', ['color' => 'danger', 'message' => $this->message]);
-            // $this->setCurrentCreateForm();
             return;
         }
-        // dd($response->body());
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        // dd($response);
         session()->flash('status', ['page' => 3, 'message' => 'Berhasil membuat ' . $this->name]);
         $this->redirect('/admin');
     }

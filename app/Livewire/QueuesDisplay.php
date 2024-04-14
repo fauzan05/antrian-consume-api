@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Events\ButtonStateEvent;
-use Illuminate\Support\Facades\Broadcast;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\On; 
@@ -14,8 +13,10 @@ class QueuesDisplay extends Component
     public $nextService;
     public $currentQueues;
     public $text_footer_display;
+    public $api_url;
     public function mount()
     {
+        $this->api_url = config('services.api_url');
         $this->getCurrentQueue();
         $this->appSettings();
     }
@@ -47,14 +48,14 @@ class QueuesDisplay extends Component
 
     public function getCurrentQueue()
     {
-        $response = Http::get('http://localhost:8000/api/queues/counters/current-queue');
+        $response = Http::get($this->api_url . '/queues/counters/current-queue');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->currentQueues = $response['data'];
     }
 
     public function appSettings()
     {
-        $response = Http::get('http://localhost:8000/api/admin/settings');
+        $response = Http::get($this->api_url . '/admin/settings');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->text_footer_display = $response['data']['text_footer_display'];
     }

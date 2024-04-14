@@ -10,15 +10,17 @@ use Livewire\Component;
 class ServicesMenus extends Component
 {
     public $services;
+    public $api_url;
     
     public function mount()
     {
+        $this->api_url = config('services.api_url');
         $this->getServices();
     }
 
     public function getServices()
     {
-        $response = Http::get('http://localhost:8000/api/services');
+        $response = Http::get($this->api_url . '/services');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $response = array_filter($response['data'], function($var){
             return $var['role'] == 'poly';
@@ -28,7 +30,7 @@ class ServicesMenus extends Component
     
     public function createQueue($id)
     {
-        $response = Http::post('http://localhost:8000/api/queues', [
+        $response = Http::post($this->api_url . '/queues', [
             'poly_service_id' => $id
         ]);
         if($response->forbidden()) {

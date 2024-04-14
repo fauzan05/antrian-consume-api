@@ -22,10 +22,13 @@ class QueuesMenus extends Component
     public $totalQueue; // total antrian
     public $currentQueue; // antrian sekarang
     public $nextQueue; // antrian selanjutnya
+    public $api_url;
+
     public function mount($user, $token)
     {
-        $this->user = $user;
         $this->token = $token;
+        $this->api_url = config('services.api_url');
+        $this->user = $user;
         $this->getQueue();
     }
 
@@ -60,9 +63,9 @@ class QueuesMenus extends Component
     public function getQueue()
     {
         $responses = Http::pool(fn (Pool $pool) => [
-            $pool->get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '/current-queue'),
-            $pool->get('http://localhost:8000/api/counters/users/' . $this->user['id']),
-            $pool->get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage)
+            $pool->get($this->api_url . '/queues/users/' . $this->user['id'] . '/current-queue'),
+            $pool->get($this->api_url . '/counters/users/' . $this->user['id']),
+            $pool->get($this->api_url . '/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage)
         ]);
         $responses[0] = json_decode($responses[0]->body(), JSON_OBJECT_AS_ARRAY);
         $responses[1] = json_decode($responses[1]->body(), JSON_OBJECT_AS_ARRAY);
@@ -102,7 +105,7 @@ class QueuesMenus extends Component
 
     public function getSingleQueues()
     {
-        $response = Http::get('http://localhost:8000/api/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage);
+        $response = Http::get($this->api_url . '/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->queues = $response['data_paginate'];
     }

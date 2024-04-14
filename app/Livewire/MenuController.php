@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Support\Facades\Cookie;
 
@@ -16,10 +15,12 @@ class MenuController extends Component
     public $closed = false;
     public $name_of_institute;
     public $address;
+    public $api_url;
     public function mount($user, $token, $darkMode)
     {
-        $this->currentUser = $user;
         $this->token = $token;
+        $this->api_url = config('services.api_url');
+        $this->currentUser = $user;
         $this->darkMode = (boolean)$darkMode;
         $this->getAppSettings();
     }
@@ -48,10 +49,10 @@ class MenuController extends Component
 
     public function getAppSettings()
     {
-        $response = Http::get('http://127.0.0.1:8000/api/admin/settings');
+        $response = Http::get($this->api_url . '/admin/settings');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->name_of_institute = $response['data']['name_of_health_institute'];
-        $this->address = $response['data']['address_of_health_institute'];
+        $this->name_of_institute = $response['data']['name_of_health_institute'] ?? "untitled";
+        $this->address = $response['data']['address_of_health_institute'] ?? "untitled";
     }
 
     public function countIndexMenu($index)
@@ -65,7 +66,7 @@ class MenuController extends Component
         Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token
-        ])->delete('http://127.0.0.1:8000/api/users/logout');
+        ])->delete($this->api_url . '/users/logout');
         $this->redirect('/login');
     }
 
