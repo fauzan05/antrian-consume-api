@@ -20,10 +20,15 @@ class UserEditForm extends Component
     public $message;
     public $color;
     public $api_url;
+    public $headers;
 
     public function mount($user, $token)
     {
         $this->token = $token;
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->api_url = config('services.api_url');
         $this->user = $user;
         $this->setCurrentEditForm();
@@ -49,10 +54,7 @@ class UserEditForm extends Component
     {
         $this->rules();
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put($this->api_url . '/users/' . $this->id, [
+        $response = Http::withHeaders($this->headers)->put($this->api_url . '/users/' . $this->id, [
             'name' => $this->name,
             'username' => $this->username,
             'old_password' => $this->old_password,
@@ -94,10 +96,7 @@ class UserEditForm extends Component
 
     public function delete()
     {
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->delete($this->api_url . '/users/' . $this->id);
+        Http::withHeaders($this->headers)->delete($this->api_url . '/users/' . $this->id);
         // dd($response->body());
         session()->flash('status', ['page' => 4, 'message' => 'Berhasil mengubah ' . $this->name]);
         return $this->redirect('admin', navigate: true);

@@ -13,6 +13,7 @@ class QueuesDisplay extends Component
     public $nextService;
     public $currentQueues;
     public $text_footer_display;
+    public $selected_video;
     public $api_url;
     public function mount()
     {
@@ -55,9 +56,10 @@ class QueuesDisplay extends Component
 
     public function appSettings()
     {
-        $response = Http::get($this->api_url . '/admin/settings');
+        $response = Http::get($this->api_url . '/app');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->text_footer_display = $response['data']['text_footer_display'];
+        $this->text_footer_display = $response['data']['text_footer_display'] ?? "#fff";
+        $this->selected_video = $response['data']['selected_video'] ?? "";
     }
     public function render()
     {

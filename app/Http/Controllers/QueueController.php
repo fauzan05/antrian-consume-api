@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Client\Pool;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use PDF;
 
 class QueueController extends Controller
 {
+    private $api_url;
+
+    public function __construct(){
+        $this->api_url = config('services.api_url');
+    }
     public function index()
     {
         return view('queues.display');
@@ -19,8 +21,8 @@ class QueueController extends Controller
     public function print(int $id)
     {
         $responses = Http::pool(fn (Pool $pool) => [
-            $pool->get('http://localhost:8000/api/queues/' . $id),
-            $pool->get('http://localhost:8000/api/admin/settings')
+            $pool->get($this->api_url . '/queues/' . $id),
+            $pool->get($this->api_url . '/app')
         ]);
         $responses[0] = json_decode($responses[0]->body(), JSON_OBJECT_AS_ARRAY);
         $responses[1] = json_decode($responses[1]->body(), JSON_OBJECT_AS_ARRAY);

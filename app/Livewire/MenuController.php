@@ -49,7 +49,7 @@ class MenuController extends Component
 
     public function getAppSettings()
     {
-        $response = Http::get($this->api_url . '/admin/settings');
+        $response = Http::get($this->api_url . '/app');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->name_of_institute = $response['data']['name_of_health_institute'] ?? "untitled";
         $this->address = $response['data']['address_of_health_institute'] ?? "untitled";

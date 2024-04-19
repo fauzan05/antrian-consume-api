@@ -28,11 +28,16 @@ class CounterCreateForm extends Component
     public $users;
     public $services;
     public $api_url;
+    public $headers;
 
     public function mount($dataCreate, $token)
     {
         $this->token = $token;
         $this->api_url = config('services.api_url');
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->services = $dataCreate['services'];
         $this->users = $dataCreate['users'];
         $this->setCurrentCreateForm();
@@ -41,10 +46,7 @@ class CounterCreateForm extends Component
     public function createCounter()
     {             
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->post($this->api_url . '/counters', [
+        $response = Http::withHeaders($this->headers)->post($this->api_url . '/counters', [
             'name' => $this->name,
             'user_id' => $this->user_id,
             'service_id' => $this->service_id,

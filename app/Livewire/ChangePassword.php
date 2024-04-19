@@ -13,6 +13,7 @@ class ChangePassword extends Component
     public $new_password_confirmation;
     public $message;
     public $api_url;
+    public $headers;
     protected $rules = [
         'old_password' => 'required|min:3',
         'new_password' => 'required|min:3',
@@ -21,15 +22,16 @@ class ChangePassword extends Component
     public function mount($token)
     {
         $this->token = $token;
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token,
+        ];
         $this->api_url = config('services.api_url');
     }
     public function update()
     {
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token,
-        ])->put($this->api_url . '/users/update-password', [
+        $response = Http::withHeaders($this->headers)->put($this->api_url . '/users/update-password', [
             'old_password' => $this->old_password,
             'new_password' => $this->new_password,
             'new_password_confirmation' => $this->new_password_confirmation,

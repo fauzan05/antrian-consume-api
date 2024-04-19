@@ -37,6 +37,11 @@ class Login extends Component
             return redirect('unprocess');
         }
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        // dd($response);
+        if (!$response) {
+            $this->message = "Internal Server Error";
+            return;
+        }
         $role = $response['data']['role'];
         if ($role == 'operator') {
             Cookie::queue('token', $response['token'], 1440);
@@ -49,7 +54,7 @@ class Login extends Component
             if(!Cookie::get('dark-mode')){
                 Cookie::queue('dark-mode', (boolean)false);
             }
-            return redirect('admin')->with('token', $response['token'] );
+            return redirect('admin')->with('token', $response['token']);
         }
     }
     public function render()

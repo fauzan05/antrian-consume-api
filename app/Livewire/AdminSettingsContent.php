@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Validate;
@@ -13,9 +14,13 @@ class AdminSettingsContent extends Component
     use WithFileUploads;
 
     public $selected_video;
+    public $selected_logo;
 
     #[Validate('nullable|mimes:mp4,mov,mkv,mpeg|max:50000|min:1000')]
     public $video;
+
+    #[Validate('nullable|image|max:5000|min:50')]
+    public $logo;
     public $name;
     public $address;
     public $jam_buka = [];
@@ -25,6 +30,9 @@ class AdminSettingsContent extends Component
     public $viewClose = [];
     public $footerText;
     public $footerColor = "#49c36e";
+    public $footerTextColor = "#ffff";
+    public $headerColor = "#49c36e";
+    public $headerTextColor = "#ffff";
     public $operationalHours;
     public $token;
     public $schedule;
@@ -36,11 +44,16 @@ class AdminSettingsContent extends Component
     public $is_delete_video = false;
     public $is_delete_schedules = false;
     public $api_url;
+    public $headers;
 
     public function mount($token)
     {
         $this->token = $token;
         $this->api_url = config('services.api_url');
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->showOperationalHours();
         $this->setFirstStateOperationalHours();
         $this->getSelectedIdentity();
@@ -87,64 +100,68 @@ class AdminSettingsContent extends Component
         if(empty($this->selected_video)){
             return session()->flash('status_delete_video', ['color' => 'danger','message' => 'Tidak ada video yang terhapus']);
         }
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->delete($this->api_url . '/files/videos/' . trim($this->selected_video));
+        File::delete(public_path('/assets/video/') . $this->selected_video);
+        Http::withHeaders($this->headers)->delete($this->api_url . '/app/video/' . trim($this->selected_video));
+        $this->reset('selected_video');
         session()->flash('status_delete_video', ['color' => 'success', 'message' => 'Berhasil menghapus video']);
     }
 
     public function updateSettings()
     {
-        $this->validate();
         if (!empty($this->video)) {
-            $path = $this->video->getRealPath();
-            $originalName = $this->video->getClientOriginalName();
-            Http::delete($this->api_url . '/files/videos');
-            Http::attach(
-                'video_file',
-                file_get_contents($path),
-                $originalName
-            )->post($this->api_url . '/app/videos');
+            // hapus dulu file video sebelumnya
+            File::delete(public_path('/assets/video/') . $this->selected_video);
+
+            $getRealPath = $this->video->getRealPath();
+            $hashName = $this->video->hashName();
+            File::move($getRealPath, public_path('/assets/video/') . $hashName);
+            Http::withHeaders($this->headers)->post($this->api_url . '/app/video', [
+                'video_filename' => $hashName
+            ]);
         }
+
+        if (!empty($this->logo)) {
+            // hapus dulu file logo sebelumnya
+            File::delete(public_path('/assets/logo') . $this->selected_logo);
+
+            $getRealPath = $this->logo->getRealPath();
+            $hashName = $this->logo->hashName();
+            File::move($getRealPath, public_path('/assets/logo/') . $hashName);
+            Http::withHeaders($this->headers)->post($this->api_url . '/app/logo', [
+                'logo_filename' => $hashName
+            ]);
+        }
+
         if (!empty(trim($this->name)) || !empty(trim($this->address))) {
-            Validator::make(
+            $validator = Validator::make(
                 ['name' => $this->name, 'address' => $this->address],
                 ['name' => 'required|min:3|max:50|string', 'address' => 'required|min:3|max:100|string'],
                 ['required' => 'Kolom :attribute harus diisi', 'min' => 'Kolom :atttribute minimal :min karakter', 'max' => 'Kolom :attribute maksimal :max karakter']
             )->validate();
-            Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->token
-            ])->put($this->api_url . '/admin/settings/identity', [
-                'name_of_health_institute' => trim($this->name),
-                'address_of_health_institute' => trim($this->address)
+            Http::withHeaders($this->headers)->put($this->api_url . '/app/identity', [
+                'name_of_health_institute' => trim($validator['name']),
+                'address_of_health_institute' => trim($validator['address'])
             ]);
         }
+
         if (!empty(trim($this->footerText))) {
             Validator::make(
                 ['footerText' => $this->footerText],
                 ['footerText' => 'required|min:3|max:100|string'],
                 ['required' => 'Kolom :attribute harus diisi', 'min' => 'Kolom :atttribute minimal :min karakter', 'max' => 'Kolom :attribute maksimal :max karakter']
             )->validate();
-            Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->token
-            ])->put($this->api_url . '/admin/settings/text-footer', [
+            Http::withHeaders($this->headers)->put($this->api_url . '/app/text-footer', [
                 'text_footer_display' => trim($this->footerText)
             ]);
         }
 
-        if (!empty(trim($this->footerColor))) {
+        if (!empty(trim($this->footerColor)) && !empty(trim($this->footerColor))) {
             Validator::make(
                 ['footerColor' => $this->footerColor],
                 ['footerColor' => 'required|max:10|string'],
                 ['required' => 'Kolom :attribute harus diisi', 'max' => 'Kolom :atttribute maksimal :max karakter']
             )->validate();
-            Http::withHeaders([
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->token
-            ])->put($this->api_url . '/admin/settings/color-footer', [
+            Http::withHeaders($this->headers)->put($this->api_url . '/app/color-footer', [
                 'display_footer_color' => trim($this->footerColor)
             ]);
         }
@@ -185,10 +202,7 @@ class AdminSettingsContent extends Component
         foreach ($this->jam_buka as $id => $openValue) {
             $this->schedule[$id] = [$openValue, $this->jam_tutup[$id], $this->is_active[$id]];
         }
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put($this->api_url . '/app/operational-hours', [
+        Http::withHeaders($this->headers)->put($this->api_url . '/app/operational-hours', [
             'data' => $this->schedule
         ]);
 
@@ -203,10 +217,7 @@ class AdminSettingsContent extends Component
             ['password_lama' => 'required|min:3|max:50|string', 'password_baru' => 'required|min:3|max:50|string', 'konfirmasi_password_baru' => 'required|min:3|max:50|same:password_baru'],
             ['required' => 'Kolom :attribute harus diisi', 'same' => 'Password baru tidak sama']
         )->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put($this->api_url . '/users/update', [
+        $response = Http::withHeaders($this->headers)->put($this->api_url . '/users/update-password', [
             'old_password' => $this->password_lama,
             'new_password' => $this->password_baru,
             'new_password_confirmation' => $this->konfirmasi_password_baru
@@ -230,10 +241,7 @@ class AdminSettingsContent extends Component
 
     public function deleteAllSchedule()
     {
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->delete($this->api_url . '/app/operational-hours');
+        Http::withHeaders($this->headers)->delete($this->api_url . '/app/operational-hours');
         session()->flash('status_delete_schedules', ['color' => 'success', 'message' => 'Berhasil menghapus jadwal operasional']);
         $this->showOperationalHours();
     }
@@ -247,6 +255,7 @@ class AdminSettingsContent extends Component
         $this->footerText = $response['data']['text_footer_display'] ?? null;
         $this->footerColor = $response['data']['display_footer_color'] ?? $this->footerColor;
         $this->selected_video = $response['data']['selected_video'] ?? null;
+        $this->selected_logo = $response['data']['selected_logo'] ?? null;
     }
 
     public function showOperationalHours()

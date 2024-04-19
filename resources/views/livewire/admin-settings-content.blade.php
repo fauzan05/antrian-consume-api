@@ -26,12 +26,29 @@
                                 <form class="m-5" wire:submit="updateSettings">
                                     <div class="input-group mb-3 d-flex flex-column" style="width: 100%">
                                         <div class="d-flex flex-row mb-3">
+                                            <label class="form-label text">Unggah Logo</label>
+                                            <div class="ms-5 d-flex flex-column">
+                                                <input type="file" wire:model.live="logo" class="form-control">
+                                                <span class="video-form-text ms-2 mt-2">Format file yang diizinkan: png,
+                                                    jpg. File max: 5 Mb, File min: 50 Kb.</span>
+                                                <span
+                                                    class="video-form-text ms-2">{{ $selected_logo ? 'Logo terkini: ' . $selected_logo : '' }}</span>
+                                                @error('logo')
+                                                    <span class="error text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <i id="trash-tooltip" class="trash-icon fa-solid fa-trash-can ms-3 mt-2"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle1"></i>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3 d-flex flex-column" style="width: 100%">
+                                        <div class="d-flex flex-row mb-3">
                                             <label class="form-label text">Unggah Video</label>
                                             <div class="ms-5 d-flex flex-column">
                                                 <input type="file" wire:model.live="video" class="form-control">
                                                 <span class="video-form-text ms-2 mt-2">Format file yang diizinkan: mp4,
                                                     mov,
-                                                    mkv, mpeg. File max: 50 Mb.</span>
+                                                    mkv, mpeg. File max: 50 Mb. File min: 1 Mb.</span>
                                                 <span
                                                     class="video-form-text ms-2">{{ $selected_video ? 'Video terkini: ' . $selected_video : '' }}</span>
                                                 @error('video')
@@ -71,12 +88,41 @@
                                         @enderror
                                     </div>
                                     <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
-                                        <label for="exampleFormControlInput3" class="form-label text">Warna Footer
-                                            Display</label>
+                                        <label for="exampleColorInput3" class="form-label text">Warna Header</label>
+                                        <input type="color" wire:model.live="headerColor"
+                                            class="form-control form-control-color" id="exampleColorInput3"
+                                            title="Pilih Warna" value="{{ $headerColor }}">
+                                        @error('headerColor')
+                                            <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
+                                        <label for="exampleColorInput4" class="form-label text">Warna Footer</label>
                                         <input type="color" wire:model.live="footerColor"
-                                            class="form-control form-control-color" id="exampleColorInput"
+                                            class="form-control form-control-color" id="exampleColorInput4"
                                             title="Pilih Warna" value="{{ $footerColor }}">
                                         @error('footerColor')
+                                            <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
+                                        <label for="exampleColorInput5" class="form-label text">Warna Teks Header</label>
+                                        <input type="color" wire:model.live="headerTextColor"
+                                            class="form-control form-control-color" id="exampleColorInput5"
+                                            title="Pilih Warna" value="{{ $headerTextColor }}">
+                                        @error('headerTextColor')
+                                            <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
+                                        <label for="exampleColorInput6" class="form-label text">Warna Teks Footer</label>
+                                        <input type="color" wire:model.live="footertextColor"
+                                            class="form-control form-control-color" id="exampleColorInput6"
+                                            title="Pilih Warna" value="{{ $footerTextColor }}">
+                                        @error('footerTextColor')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
                                             </span>
                                         @enderror

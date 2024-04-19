@@ -26,10 +26,15 @@ class ServiceEditForm extends Component
     public $token;
     public $color;
     public $api_url;
+    public $headers;
     
     public function mount($service, $token)
     {
         $this->token = $token;
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->api_url = config('services.api_url');
         $this->service = $service;
         $this->setCurrentEditForm();
@@ -38,10 +43,7 @@ class ServiceEditForm extends Component
     public function updateService()
     {
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put($this->api_url . '/services/' . $this->id, [
+        $response = Http::withHeaders($this->headers)->put($this->api_url . '/services/' . $this->id, [
             'name' => $this->name,
             'initial' => $this->initial,
             'role' => $this->role,
@@ -67,10 +69,7 @@ class ServiceEditForm extends Component
 
     public function delete()
     {
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->delete($this->api_url . '/services/' . $this->id);
+        Http::withHeaders($this->headers)->delete($this->api_url . '/services/' . $this->id);
         session()->flash('status', ['page' => 3, 'message' => 'Berhasil menghapus ' . $this->service['name']]);
         $this->redirect('/admin');
     }

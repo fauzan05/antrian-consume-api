@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
+    private $api_url;
+
+    public function __construct(){
+        $this->api_url = config('services.api_url');
+    }
+
     public function index()
     {
         return view('index');
@@ -26,7 +28,7 @@ class AuthController extends Controller
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
-        ])->get('http://127.0.0.1:8000/api/users/current');
+        ])->get($this->api_url . '/users/current');
         if($response->unauthorized()){
             return redirect('/login');
         }
@@ -37,9 +39,9 @@ class AuthController extends Controller
     public function getAdminView(Request $request)
     {
         $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $request->cookie('token')
-        ])->get('http://127.0.0.1:8000/api/users/current');
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $request->cookie('token')
+        ])->get($this->api_url . '/users/current');
         if($response->unauthorized()){
             return redirect('/login');
         }
@@ -52,7 +54,7 @@ class AuthController extends Controller
         Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
-        ])->delete('http://localhost:8000/api/users/logout');
+        ])->delete($this->api_url . '/users/logout');
         return redirect('login')->with('message', 'Berhasil Keluar');
     }
 
@@ -66,7 +68,7 @@ class AuthController extends Controller
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
-        ])->get('http://127.0.0.1:8000/api/users/current');
+        ])->get($this->api_url . '/users/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         return view('dashboard.operator.settings', ['user' => $response['data']]);
     }

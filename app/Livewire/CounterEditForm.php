@@ -29,11 +29,16 @@ class CounterEditForm extends Component
     public $users;
     public $services;
     public $api_url;
+    public $headers;
 
     public function mount($currentDataEdit, $token)
     {
         $this->token = $token;
         $this->api_url = config('services.api_url');
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->counter = $currentDataEdit['counter'];
         $this->services = $currentDataEdit['services'];
         $this->users = $currentDataEdit['users'];
@@ -43,10 +48,7 @@ class CounterEditForm extends Component
     public function updateCounter()
     {     
         $this->is_active = (boolean)$this->is_active ? true : false;
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->put($this->api_url . '/counters/' . $this->id, [
+        $response = Http::withHeaders($this->headers)->put($this->api_url . '/counters/' . $this->id, [
             'name' => $this->name,
             'user_id' => $this->user_id,
             'service_id' => $this->service_id,
@@ -77,10 +79,7 @@ class CounterEditForm extends Component
 
     public function delete()
     {   
-        Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->delete($this->api_url . '/counters/' . $this->id);
+        Http::withHeaders($this->headers)->delete($this->api_url . '/counters/' . $this->id);
         session()->flash('status', ['page' => 2, 'message' => 'Berhasil menghapus ' . $this->counter['name']]);
         $this->redirect('/admin');
     }

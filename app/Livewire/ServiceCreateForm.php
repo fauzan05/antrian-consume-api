@@ -23,20 +23,22 @@ class ServiceCreateForm extends Component
     public $token;
     public $color;
     public $api_url;
+    public $headers;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->api_url = config('services.api_url');
     }
 
     public function createService()
     {
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->post($this->api_url . '/services', [
+        $response = Http::withHeaders($this->headers)->post($this->api_url . '/services', [
             'name' => $this->name,
             'initial' => $this->initial,
             'role' => $this->role,

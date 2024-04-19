@@ -33,6 +33,7 @@ class ServicesMenus extends Component
         $response = Http::post($this->api_url . '/queues', [
             'poly_service_id' => $id
         ]);
+        // dd($response);
         if($response->forbidden()) {
             $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
             session()->now('status', $response['error']['error_message']);

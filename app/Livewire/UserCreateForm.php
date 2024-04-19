@@ -23,20 +23,22 @@ class UserCreateForm extends Component
     public $token;
     public $color;
     public $api_url;
+    public $headers;
 
     public function mount($token)
     {
         $this->token = $token;
+        $this->headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->token
+        ];
         $this->api_url = config('services.api_url');
     }
 
     public function createUser()
     {
         $this->validate();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token
-        ])->post($this->api_url . '/users/register', [
+        $response = Http::withHeaders($this->headers)->post($this->api_url . '/users/register', [
             'name' => $this->name,
             'username' => $this->username,
             'password' => $this->password,
