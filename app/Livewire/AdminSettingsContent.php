@@ -30,9 +30,9 @@ class AdminSettingsContent extends Component
     public $viewClose = [];
     public $footerText;
     public $footerColor = "#49c36e";
-    public $footerTextColor = "#ffff";
+    public $textFooterColor = "#ffffff";
     public $headerColor = "#49c36e";
-    public $headerTextColor = "#ffff";
+    public $textHeaderColor = "#ffffff";
     public $operationalHours;
     public $token;
     public $schedule;
@@ -42,6 +42,7 @@ class AdminSettingsContent extends Component
     public $message;
     public $color;
     public $is_delete_video = false;
+    public $is_delete_logo = false;
     public $is_delete_schedules = false;
     public $api_url;
     public $headers;
@@ -75,11 +76,22 @@ class AdminSettingsContent extends Component
         $this->is_delete_video = (bool)$this->is_delete_video ? (bool)false : (bool)true;
         $this->deleteVideo();
     }
+    public function isDeleteLogo()
+    {
+        $this->is_delete_logo = (bool)$this->is_delete_logo ? (bool)false : (bool)true;
+        $this->deleteLogo();
+    }
 
     public function isCloseVideo()
     {
         if($this->is_delete_video){
             $this->is_delete_video = (bool)$this->is_delete_video ? (bool)false : (bool)true;
+        }
+    }
+    public function isCloseLogo()
+    {
+        if($this->is_delete_logo){
+            $this->is_delete_logo = (bool)$this->is_delete_logo ? (bool)false : (bool)true;
         }
     }
     public function isDeleteSchedules()
@@ -95,13 +107,24 @@ class AdminSettingsContent extends Component
         }
     }
 
+    public function deleteLogo()
+    {
+        if(empty($this->selected_logo)){
+            return session()->flash('status_delete_logo', ['color' => 'danger','message' => 'Tidak ada logo yang terhapus']);
+        }
+        File::delete(public_path('/assets/logo/') . $this->selected_logo);
+        Http::withHeaders($this->headers)->delete($this->api_url . '/app/logo');
+        $this->reset('selected_logo');
+        session()->flash('status_delete_logo', ['color' => 'success', 'message' => 'Berhasil menghapus logo']);
+    }
+
     public function deleteVideo()
     {
         if(empty($this->selected_video)){
             return session()->flash('status_delete_video', ['color' => 'danger','message' => 'Tidak ada video yang terhapus']);
         }
         File::delete(public_path('/assets/video/') . $this->selected_video);
-        Http::withHeaders($this->headers)->delete($this->api_url . '/app/video/' . trim($this->selected_video));
+        Http::withHeaders($this->headers)->delete($this->api_url . '/app/video');
         $this->reset('selected_video');
         session()->flash('status_delete_video', ['color' => 'success', 'message' => 'Berhasil menghapus video']);
     }
@@ -155,14 +178,18 @@ class AdminSettingsContent extends Component
             ]);
         }
 
-        if (!empty(trim($this->footerColor)) && !empty(trim($this->footerColor))) {
+        if (!empty(trim($this->footerColor)) || !empty(trim($this->headerColor) || !empty(trim($this->textFooterColor)) || !empty(trim($this->textHeaderColor)))) {
             Validator::make(
-                ['footerColor' => $this->footerColor],
-                ['footerColor' => 'required|max:10|string'],
-                ['required' => 'Kolom :attribute harus diisi', 'max' => 'Kolom :atttribute maksimal :max karakter']
+                ['headerColor' => $this->headerColor, 'footerColor' => $this->footerColor, 'textHeaderColor' => $this->textHeaderColor, 'textFooterColor' => $this->textFooterColor],
+                ['headerColor' => 'required|max:7|min:7|string', 'footerColor' => 'required|max:7|min:7|string', 'textHeaderColor' => 'required|max:7|min:7|string', 'textFooterColor' => 'required|max:7|min:7|string'],
+                ['required' => 'Warna :attribute harus diisi', 'max' => 'Warna tidak valid', 'min' => 'Warna tidak valid']
             )->validate();
-            Http::withHeaders($this->headers)->put($this->api_url . '/app/color-footer', [
-                'display_footer_color' => trim($this->footerColor)
+
+            Http::withHeaders($this->headers)->put($this->api_url . '/app/header-footer/colors', [
+                'header_color' => trim($this->headerColor),
+                'footer_color' => trim($this->footerColor),
+                'text_header_color' => trim($this->textHeaderColor),
+                'text_footer_color' => trim($this->textFooterColor)
             ]);
         }
 
@@ -217,11 +244,13 @@ class AdminSettingsContent extends Component
             ['password_lama' => 'required|min:3|max:50|string', 'password_baru' => 'required|min:3|max:50|string', 'konfirmasi_password_baru' => 'required|min:3|max:50|same:password_baru'],
             ['required' => 'Kolom :attribute harus diisi', 'same' => 'Password baru tidak sama']
         )->validate();
+
         $response = Http::withHeaders($this->headers)->put($this->api_url . '/users/update-password', [
             'old_password' => $this->password_lama,
             'new_password' => $this->password_baru,
             'new_password_confirmation' => $this->konfirmasi_password_baru
         ]);
+
         if ($response->unauthorized()) {
             if (!isset($response['message'])) {
                 $this->color = true;
@@ -235,6 +264,7 @@ class AdminSettingsContent extends Component
                 return;
             }
         }
+
         session()->flash('status', ['page' => 5, 'message' => 'Berhasil mengubah password admin']);
         $this->redirect('/admin', );
     }
@@ -253,9 +283,12 @@ class AdminSettingsContent extends Component
         $this->name = $response['data']['name_of_health_institute'] ?? null;
         $this->address = $response['data']['address_of_health_institute'] ?? null;
         $this->footerText = $response['data']['text_footer_display'] ?? null;
-        $this->footerColor = $response['data']['display_footer_color'] ?? $this->footerColor;
-        $this->selected_video = $response['data']['selected_video'] ?? null;
+        $this->headerColor = $response['data']['header_color'] ?? $this->footerColor;
+        $this->textHeaderColor = $response['data']['text_header_color'] ?? $this->footerColor;
+        $this->footerColor = $response['data']['footer_color'] ?? $this->footerColor;
+        $this->textFooterColor = $response['data']['text_footer_color'] ?? $this->footerColor;
         $this->selected_logo = $response['data']['selected_logo'] ?? null;
+        $this->selected_video = $response['data']['selected_video'] ?? null;
     }
 
     public function showOperationalHours()

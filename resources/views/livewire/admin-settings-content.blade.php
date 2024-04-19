@@ -1,5 +1,5 @@
 <div class="col-12 content">
-    <input type="hidden" name="token" data-csrf="{{csrf_token()}}" value="{{ csrf_token() }}">
+    <input type="hidden" name="token" data-csrf="{{ csrf_token() }}" value="{{ csrf_token() }}">
     <div class="container-fluid container-content">
         <div class="row no-gutters gap-3">
             <div class="col-12">
@@ -38,7 +38,7 @@
                                                 @enderror
                                             </div>
                                             <i id="trash-tooltip" class="trash-icon fa-solid fa-trash-can ms-3 mt-2"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle1"></i>
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle1" @if(!$selected_logo) hidden @endif></i>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3 d-flex flex-column" style="width: 100%">
@@ -56,7 +56,7 @@
                                                 @enderror
                                             </div>
                                             <i id="trash-tooltip" class="trash-icon fa-solid fa-trash-can ms-3 mt-2"
-                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle1"></i>
+                                                data-bs-toggle="modal" data-bs-target="#exampleModalToggle2" @if(!$selected_video) hidden @endif></i>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
@@ -108,21 +108,23 @@
                                         @enderror
                                     </div>
                                     <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
-                                        <label for="exampleColorInput5" class="form-label text">Warna Teks Header</label>
-                                        <input type="color" wire:model.live="headerTextColor"
+                                        <label for="exampleColorInput5" class="form-label text">Warna Teks
+                                            Header</label>
+                                        <input type="color" wire:model.live="textHeaderColor"
                                             class="form-control form-control-color" id="exampleColorInput5"
-                                            title="Pilih Warna" value="{{ $headerTextColor }}">
-                                        @error('headerTextColor')
+                                            title="Pilih Warna" value="{{ $textHeaderColor }}">
+                                        @error('textHeaderColor')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="input-group mb-3 gap-5 d-flex align-items-center" style="width: 100%">
-                                        <label for="exampleColorInput6" class="form-label text">Warna Teks Footer</label>
-                                        <input type="color" wire:model.live="footertextColor"
+                                        <label for="exampleColorInput6" class="form-label text">Warna Teks
+                                            Footer</label>
+                                        <input type="color" wire:model.live="textFooterColor"
                                             class="form-control form-control-color" id="exampleColorInput6"
-                                            title="Pilih Warna" value="{{ $footerTextColor }}">
-                                        @error('footerTextColor')
+                                            title="Pilih Warna" value="{{ $textFooterColor }}">
+                                        @error('textFooterColor')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
                                             </span>
                                         @enderror
@@ -143,39 +145,41 @@
                                 style="width: 80%; height: 100%;">
                                 <form class="d-flex flex-column justify-content-center me-3 mt-2"
                                     wire:submit="updateOperationalHours">
-                                    @if($operationalHours)
-                                    @foreach ($operationalHours as $key => $item)
-                                        <div class="input-group gap-0 no-padding input-group-sm d-flex justify-content-around align-items-center flex-row"
-                                            style="width: auto !important;">
-                                            <span class="text-day mt-4">{{ $item['days'] }}</span>
-                                            <div class="d-flex mx-1 flex-column">
-                                                <span class="text-open">Jam Buka</span>
-                                                <input type="time" wire:model.live.blur="jam_buka.{{ $item['id'] }}"
-                                                    class="form-control" value="{{ $viewOpen[$key] }}">
-                                                @error('open')
-                                                    <span class="error text-danger"
-                                                        style="font-size: 0.5rem">{{ $message }} </span>
-                                                @enderror
+                                    @if ($operationalHours)
+                                        @foreach ($operationalHours as $key => $item)
+                                            <div class="input-group gap-0 no-padding input-group-sm d-flex justify-content-around align-items-center flex-row"
+                                                style="width: auto !important;">
+                                                <span class="text-day mt-4">{{ $item['days'] }}</span>
+                                                <div class="d-flex mx-1 flex-column">
+                                                    <span class="text-open">Jam Buka</span>
+                                                    <input type="time"
+                                                        wire:model.live.blur="jam_buka.{{ $item['id'] }}"
+                                                        class="form-control" value="{{ $viewOpen[$key] }}">
+                                                    @error('open')
+                                                        <span class="error text-danger"
+                                                            style="font-size: 0.5rem">{{ $message }} </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="d-flex mx-1 flex-column">
+                                                    <span class="text-close">Jam Tutup</span>
+                                                    <input type="time"
+                                                        wire:model.live.blur="jam_tutup.{{ $item['id'] }}"
+                                                        class="form-control" value="{{ $viewClose[$key] }}">
+                                                    @error('close')
+                                                        <span class="error text-danger"
+                                                            style="font-size: 0.5rem">{{ $message }} </span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-switch form-check-reverse">
+                                                    <input id="{{ $item['id'] }}"
+                                                        wire:click="isActive({{ $item['id'] }})"
+                                                        class="form-check-input check-schedule ms-2 mt-4"
+                                                        type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                                                        @if ($is_active[$item['id']] || $is_active == 1) checked @endif>
+                                                </div>
                                             </div>
-                                            <div class="d-flex mx-1 flex-column">
-                                                <span class="text-close">Jam Tutup</span>
-                                                <input type="time" wire:model.live.blur="jam_tutup.{{ $item['id'] }}"
-                                                    class="form-control" value="{{ $viewClose[$key] }}">
-                                                @error('close')
-                                                    <span class="error text-danger"
-                                                        style="font-size: 0.5rem">{{ $message }} </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-switch form-check-reverse">
-                                                <input id="{{ $item['id'] }}"
-                                                    wire:click="isActive({{ $item['id'] }})"
-                                                    class="form-check-input check-schedule ms-2 mt-4" type="checkbox"
-                                                    role="switch" id="flexSwitchCheckDefault"
-                                                    @if ($is_active[$item['id']] || $is_active == 1) checked @endif>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    @endforeach
+                                            <hr>
+                                        @endforeach
                                     @endif
                                     <button type="submit" class="btn btn-primary mt-3 mb-3">Simpan</button>
                                     <button type="button" wire:click="resetSchedule()"
@@ -203,7 +207,8 @@
                                     wire:submit="updateAdminPassword">
                                     <div class="mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Password Lama</label>
-                                        <input wire:model="password_lama" type="password" autocomplete="{{ csrf_token() }}" class="form-control"
+                                        <input wire:model="password_lama" type="password"
+                                            autocomplete="{{ csrf_token() }}" class="form-control"
                                             id="exampleInputPassword1">
                                         @error('password_lama')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
@@ -212,7 +217,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputPassword2" class="form-label">Password Baru</label>
-                                        <input wire:model="password_baru" type="password" autocomplete="{{ csrf_token() }}" class="form-control"
+                                        <input wire:model="password_baru" type="password"
+                                            autocomplete="{{ csrf_token() }}" class="form-control"
                                             id="exampleInputPassword2">
                                         @error('password_baru')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
@@ -222,8 +228,9 @@
                                     <div class="mb-3">
                                         <label for="exampleInputPassword3" class="form-label">Konfirmasi Password
                                             Baru</label>
-                                        <input wire:model="konfirmasi_password_baru" type="password" autocomplete="{{ csrf_token() }}"
-                                            class="form-control" id="exampleInputPassword3">
+                                        <input wire:model="konfirmasi_password_baru" type="password"
+                                            autocomplete="{{ csrf_token() }}" class="form-control"
+                                            id="exampleInputPassword3">
                                         @error('konfirmasi_password_baru')
                                             <span class="error text-danger" style="font-size: 0.5rem">{{ $message }}
                                             </span>
@@ -234,9 +241,49 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Modal Delete Video -->
-                    <div class="modal fade {{ $is_delete_video ? 'show' : '' }}" id="exampleModalToggle1"
+                    <!-- Modal Delete Logo -->
+                    <div class="modal fade {{ $is_delete_logo ? 'show' : '' }}" id="exampleModalToggle1"
                         tabindex="-1" aria-labelledby="exampleModalLabel1"
+                        @if ($is_delete_logo) aria-modal="true" role="dialog" style="display: block !important;" @else aria-hidden="true" style="display: none" @endif>
+                        <div class="modal-dialog settings modal-dialog-centered">
+                            <div class="modal-content settings">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @if ($is_delete_logo)
+                                        @if (session('status_delete_logo'))
+                                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                                <div class="alert alert-{{ session('status_delete_logo')['color'] }} text-center"
+                                                    role="alert" style="width: 80%;">
+                                                    {{ session('status_delete_logo')['message'] }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @elseif($is_delete_logo == false)
+                                        <div class="m-2">Anda yakin ingin menghapus logo {{ $selected_logo }}
+                                            ?</div>
+                                    @endif
+                                </div>
+                                <div class="modal-footer">
+                                    @if ($is_delete_logo)
+                                        <button wire:click="isCloseLogo()" type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Oke</button>
+                                    @elseif($is_delete_logo == false)
+                                        <button wire:click="isCloseLogo()" type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Batal</button>
+                                        <button type="button" wire:click="isDeleteLogo()"
+                                            class="btn btn-danger">Hapus</button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Delete Video -->
+                    <div class="modal fade {{ $is_delete_video ? 'show' : '' }}" id="exampleModalToggle2"
+                        tabindex="-1" aria-labelledby="exampleModalLabel2"
                         @if ($is_delete_video) aria-modal="true" role="dialog" style="display: block !important;" @else aria-hidden="true" style="display: none" @endif>
                         <div class="modal-dialog settings modal-dialog-centered">
                             <div class="modal-content settings">
