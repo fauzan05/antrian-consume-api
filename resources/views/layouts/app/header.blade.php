@@ -5,7 +5,7 @@ $api_url = config('services.api_url')
     <nav class="navbar shadow navbar-expand-sm d-flex navbar-dark bg-success py-3">
         <div class="container">
             <a class="navbar-brand text-white" href="{{ url('/') }}">
-                <img src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="Bootstrap" width="40" height="40">
+                <img id="logo" src="" alt="Bootstrap" width="40" height="40">
                 <span id="nameOfHealthInstitute" class="px-3">Untitled</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -33,7 +33,10 @@ $api_url = config('services.api_url')
             var nameOfHealthInstitute = response.data.name_of_health_institute
             var color = response.data.display_footer_color
             document.getElementById("nameOfHealthInstitute").innerHTML = nameOfHealthInstitute;
-            // console.log(this.responseText)
+            var logo = response.data.selected_logo
+            var logoSrc = '{{ asset("assets/logo") }}/' + logo
+            document.getElementById("logo").setAttribute('src', logoSrc)
+            // console.log(this.responseText
        }
     };
     xhttp.open("GET",  api_url + "/app", true);

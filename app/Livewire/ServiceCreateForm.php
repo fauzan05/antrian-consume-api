@@ -8,8 +8,8 @@ use Livewire\Component;
 class ServiceCreateForm extends Component
 {
     public $name;
-    public $initial;
-    public $role;
+    public $initial = "A";
+    public $role = "registration";
     public $description;
 
     protected $rules = [

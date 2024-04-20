@@ -1,5 +1,4 @@
 <div class="col-12 content">
-    {{-- <input type="hidden" name="token" data-csrf="{{csrf_token()}}" value="{{ csrf_token() }}"> --}}
     <div class="container-fluid container-content">
         <div class="row no-gutters gap-3">
             <div class="col-12">
@@ -16,8 +15,7 @@
                         </div>
                     @endif
                     <button id="createCounter" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#createModalCounter">Buat Operator<br><i
-                            class="fa-solid fa-user icon"></i> +
+                        data-bs-target="#createModalCounter">Buat Operator<br><i class="fa-solid fa-user icon"></i> +
                     </button>
                 </div>
                 <hr style="color: var(--text-color)">
@@ -103,7 +101,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background: var(--sidebar-color)">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: var(--text-color)">Membuat Operator
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: var(--text-color)">Membuat
+                        Operator
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         style="color: red"></button>
@@ -114,3 +113,4 @@
             </div>
         </div>
     </div>
+</div>

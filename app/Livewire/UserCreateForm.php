@@ -40,6 +40,7 @@ class UserCreateForm extends Component
         $this->validate();
         $response = Http::withHeaders($this->headers)->post($this->api_url . '/users/register', [
             'name' => $this->name,
+            'role' => 'operator',
             'username' => $this->username,
             'password' => $this->password,
             'password_confirmation' => $this->password_confirmation

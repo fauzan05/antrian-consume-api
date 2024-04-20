@@ -1,13 +1,14 @@
-<header></header>
+@php
+    $api_url = config('services.api_url');
+@endphp
 <div class="container-fluid">
     <div class="row">
         <div class="col-2 p-0">
             <div class="d-flex flex-column align-items-center text-bg-dark" style="width: 100%; height: 100vh">
                 <div class="row">
                     <div class="col-3 d-flex flex-row align-items-center m-4">
-                        <img src="{{ asset('storage/img/logo-puskesmas.png') }}" class="me-3 mb-2" alt=""
-                            style="width: 100%" />
-                        <h5>Rumah Sakit Demo</h5>
+                        <img id="logo" src="" class="me-3 mb-2" alt="" style="width: 100%" />
+                        <h5 id="nameOfHealthInstitute">Rumah Sakit Demo</h5>
                     </div>
                     <div class="d-flex flex-column justify-content-between" style="min-height: 80vh;">
                         <hr>
@@ -23,7 +24,8 @@
                                         </a>
                                     </li>
                                     <li class="nav-item ms-2" style="width: 100%">
-                                        <a href="{{ url('operator/pengaturan') }}" class="nav-link text-white sidebar-button">
+                                        <a href="{{ url('operator/pengaturan') }}"
+                                            class="nav-link text-white sidebar-button">
                                             <i class="fa-solid fa-gear m-3"></i>Pengaturan
                                         </a>
                                     </li>
@@ -67,3 +69,22 @@
                     </a>
                 </div>
             </nav>
+            <script>
+                var api_url = "{{ $api_url }}"
+                // console.log(api_url)
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText)
+                        var nameOfHealthInstitute = response.data.name_of_health_institute
+                        var color = response.data.display_footer_color
+                        document.getElementById("nameOfHealthInstitute").innerHTML = nameOfHealthInstitute;
+                        var logo = response.data.selected_logo
+                        var logoSrc = '{{ asset('assets/logo') }}/' + logo
+                        document.getElementById("logo").setAttribute('src', logoSrc)
+                        // console.log(this.responseText
+                    }
+                };
+                xhttp.open("GET", api_url + "/app", true);
+                xhttp.send();
+            </script>

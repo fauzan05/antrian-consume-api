@@ -99,7 +99,7 @@ class UserEditForm extends Component
         Http::withHeaders($this->headers)->delete($this->api_url . '/users/' . $this->id);
         // dd($response->body());
         session()->flash('status', ['page' => 4, 'message' => 'Berhasil mengubah ' . $this->name]);
-        return $this->redirect('admin', navigate: true);
+        return $this->redirect('admin');
     }
 
     public function setCurrentEditForm()

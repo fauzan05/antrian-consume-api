@@ -6,7 +6,7 @@
     <nav class="sidebar p-2 shadow-sm {{ $closed == true && isset($active) ? 'close-sidebar' : '' }}">
         <li class="nav-link header rounded">
             <div class="logo-image">
-                <img class="logo-width" src="{{ asset('storage/img/logo-puskesmas.png') }}" alt="">
+                <img class="logo-width" src="{{ asset("assets/logo/$logo") }}" alt="">
             </div>
             <div>
                 <span class="text name" style="font-size: 1rem">{{ $name_of_institute }}</span>

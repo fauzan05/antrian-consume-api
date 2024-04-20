@@ -1,5 +1,4 @@
 <div class="col-12 content">
-    {{-- <input type="hidden" name="token" data-csrf="{{csrf_token()}}" value="{{ csrf_token() }}"> --}}
     <div class="container-fluid container-content">
         <div class="row no-gutters gap-3">
             <div class="col-12">
