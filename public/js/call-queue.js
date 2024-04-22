@@ -42,7 +42,7 @@ function panggil(audioFiles) {
   const currentQueue = [];
 
   Livewire.dispatch('currentQueueUpdated', { queueUpdated: [number, services] });
-  console.log(audioFiles);
+  // console.log(audioFiles);
   var audio = new Audio(audioFiles[0][currentAudioIndex]);
   if (currentAudioIndex < audioFiles[0].length) {
     audio.src = audioFiles[0][currentAudioIndex];
@@ -60,8 +60,8 @@ function panggil(audioFiles) {
         Livewire.dispatch('buttonState', { counter_id: counterId });
         audioFiles.shift();
         isPlaying = false;
-        console.log(audioFiles.length); // mengetahui sisa audio antrian di dalam array
-        console.log(counterId);
+        // console.log(audioFiles.length); // mengetahui sisa audio antrian di dalam array
+        // console.log(counterId);
         if (audioFiles.length > 0) {
           panggil(audioFiles);
         } else {

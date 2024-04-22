@@ -5,7 +5,7 @@
     </div>
     @endif
     <div class="p-0 d-flex justify-content-center align-items-center">
-        <div class="row m-5 d-flex justify-content-center align-items-center">
+        <div class="row m-5 d-flex justify-content-center align-items-center" style="width: 100%">
             @foreach ($services as $service)
                 <a wire:click.prevent="createQueue({{ $service['id'] }})" class="col-4 m-3"
                     style="width: 40%; height: 30vh; cursor: pointer;">

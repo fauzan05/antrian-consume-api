@@ -24,12 +24,14 @@ class CallQueueJob implements ShouldQueue
     public $token;
     public $counter_id;
     public $service_role;
+    public $api_url;
 
     /**
      * Create a new job instance.
      */
     public function __construct($data)
     {
+        $this->api_url = config('services.api_url');
         $this->id = $data['id'];
         $this->number = $data['number'];
         $this->service_name = $data['service_name'];
@@ -46,7 +48,7 @@ class CallQueueJob implements ShouldQueue
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,
-        ])->put('http://127.0.0.1:8000/api/queues/' . $this->id, [
+        ])->put($this->api_url . '/queues/' . $this->id, [
             'status' => 'called',
             'counter_id' => $this->counter_id,
         ]);

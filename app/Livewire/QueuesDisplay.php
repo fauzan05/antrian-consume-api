@@ -58,7 +58,7 @@ class QueuesDisplay extends Component
     {
         $response = Http::get($this->api_url . '/app');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->text_footer_display = $response['data']['text_footer_display'] ?? "#fff";
+        $this->text_footer_display = $response['data']['text_footer_display'] ?? "no text";
         $this->selected_video = $response['data']['selected_video'] ?? "";
     }
     public function render()

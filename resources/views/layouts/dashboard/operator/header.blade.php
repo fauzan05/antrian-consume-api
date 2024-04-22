@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-3 d-flex flex-row align-items-center m-4">
                         <img id="logo" src="" class="me-3 mb-2" alt="" style="width: 100%" />
-                        <h5 id="nameOfHealthInstitute">Rumah Sakit Demo</h5>
+                        <h5 id="nameOfHealthInstitute">Untitled</h5>
                     </div>
                     <div class="d-flex flex-column justify-content-between" style="min-height: 80vh;">
                         <hr>
@@ -82,6 +82,7 @@
                         var logo = response.data.selected_logo
                         var logoSrc = '{{ asset('assets/logo') }}/' + logo
                         document.getElementById("logo").setAttribute('src', logoSrc)
+                        var headerColor = response.data.header_color
                         // console.log(this.responseText
                     }
                 };
