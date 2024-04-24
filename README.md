@@ -1,66 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi Antrian (RESTful API)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Background
+Berawal dari sebuah rasa penasaran dan mencoba untuk membuat aplikasi antrian, karena sebelumnya bekerja di sebuah perusahaan kecil yang membuat mesin antrian. Namun kali ini, saya membuat sebuah aplikasi yang full di web, tidak ada campur tangan mikrokontroller.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2
+- Docker Compose
+- Laravel 10
+- Livewire 3
+- MariaDB 11.4.1
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Jika menggunakan database yang running di docker container, maka jalankan perintah 
+```
+docker compose start
+```
+pada root directory untuk membuat database MariaDB di sebuah kontainer dan di expose port-nya.
+Jika tidak ingin menggunakan docker container, tinggal gunakan XAMPP/MAMP atau MariaDB langsung di komputer dengan konfigurasi port yang 
+ada di file .env .
 
-## Learning Laravel
+<br>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Kemudian, jalankan perintah berikut di root directory agar menjalankan server localhost pada port 8000 dan host localhost.
+```
+php artisan serve --port=8000 --host=localhost
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<br>
 
-## Laravel Sponsors
+Setelah Antrian RESTful API-nya dijalankan, maka API sudah bisa di consume. Kemudian buka file yang ada di folder "antrian-consume-api" dan jalankan perintah berikut pada root directory-nya :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+php artisan serve --port=8001 --host=localhost
+```
 
-### Premium Partners
+Perintah diatas untuk menjalankan server di port 8001 dan host localhost. Setelah itu jalankan perintah berikut di root directory-nya juga :
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+php artisan websockets:serve
+```
+Perintah diatas untuk menjalankan laravel Echo agar bisa bertukar data secara real-time seperti Websocket dalam 1 lingkup aplikasi.
+Kemudian jalankan juga perintah berikut :
 
-## Contributing
+```
+php artisan queue:work
+```
+Perintah diatas untuk menjalankan Queue, agar nomor antriannya diproses secara tidak langsung. Sebenarnya fitur Queue yang digunakan pada aplikasi "antrian consume api" ini hanyalah percobaan saya dalam menggunakan fitur di laravel yaitu laravel Queue. Dalam aplikasi tersebut harus dijalankan perintah tersebut agar saat pemanggilan nomor dapat diproses.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Setelah semuanya dijalankan, tinggal buka di browser http://localhost:8001/ maka akan secara otomatis diarahkan ke halaman home dari aplikasinya. Dan sekarang tinggal buat akun admin menggunakan endpoint api register. Untuk lebih lengkapnya cek pada folder "antrian-restful-api" dan cari folder "docs", kemudian buka file api-specs.json untuk melihat semua endpoint-nya.
 
-## Code of Conduct
+<br>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Specification
+Aplikasi ini memiliki spesifikasi dan fitur sebagai berikut :
+- Admin tidak memiliki tingkatan, jadi jika membuat lebih dari 1 akun dengan role admin maka tidak akan berpengaruh apakah admin yang satunya posisinya lebih tinggi dari admin yang lain.
+- Pengunjung mendapatkan 2 nomor antrian. Yang pertama adalah nomor antrian pendaftaran, dan yang kedua adalah nomor antrian poli.
+- Operator yang bertugas di loket yang melayani layanan poli tidak akan mendapatkan nomor antrian terbaru hingga nomor antrian di layanan registrasi berhasil dipanggil.
+- Ketika operator menekan button call, button tersebut akan ter-disabled dan setelah itu akan ter-enabled lagi secara otomatis setelah audio antrian berhasil diputar hingga tuntas.
+- 1 layanan bisa digunakan di lebih dari 1 loket. Namun 1 loket hanya bisa melayani 1 layanan saja.
+- Adanya jadwal jam operasional, yang dimana ketika diaktifkan maka setiap request antrian baru akan selalu di validasi apakah jam sekarang sudah melewati batas yang ditentukan (jam buka/tutup). Jika iya maka akan menampilkan informasi bahwa sudah tutup/belum dibuka.
 
-## Security Vulnerabilities
+<br>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Aplikasi ini dibagi menjadi 2 bagian, yaitu API dan Front-end. Untuk API-nya sendiri ada di folder "antrian-restful-api", dan front-endnya ada di folder "antrian-consume-api". Keduanya harus dijalankan bersama-sama agar dapat berjalan dengan baik. Untuk melihat endpoint API-nya, masuk ke folder "antrian-restful-api" dan buka folder "docs". Disitu ada file api-specs.json yang akan membantu dalam memahami response dan request yang dibutuhkan.
