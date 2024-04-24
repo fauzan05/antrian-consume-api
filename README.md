@@ -23,6 +23,19 @@ ada di file .env .
 
 <br>
 
+Kemudian, setelah aplikasi database sudah dijalankan, saatnya melakukan insert tabel ke database tersebut sesuai dengan nama database yang sudah diatur di file .env . Caranya ketikkan perintah berikut :
+
+```
+php artisan migrate
+```
+
+Untuk folder "antrian-consume-api" tidak menggunakan database MariaDB, melainkan hanya sqlite saja karena tidak membutuhkan data yang banyak dan berubah-ubah.
+
+Setelah itu kemudian, jalankan perintah berikut di root directory agar menjalankan server localhost pada port 8000 dan host localhost.
+```
+php artisan serve --port=8000 --host=localhost
+```
+
 Kemudian, jalankan perintah berikut di root directory agar menjalankan server localhost pada port 8000 dan host localhost.
 ```
 php artisan serve --port=8000 --host=localhost
