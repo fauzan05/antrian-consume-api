@@ -5,7 +5,6 @@ namespace App\Livewire;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
-use Livewire\Attributes\On; 
 
 class AdminDashboardContent extends Component
 {
@@ -28,7 +27,7 @@ class AdminDashboardContent extends Component
     public function getAllData()
     {
         $responses = Http::pool(fn (Pool $pool) => [
-            $pool->get($this->api_url . '/queues/counters/current-queue'),
+            $pool->get($this->api_url . '/queues/counters/current'),
             $pool->get($this->api_url . '/services'),
             $pool->get($this->api_url . '/users'),
             $pool->get($this->api_url . '/counters'),

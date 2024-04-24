@@ -49,9 +49,9 @@ class QueuesDisplay extends Component
 
     public function getCurrentQueue()
     {
-        $response = Http::get($this->api_url . '/queues/counters/current-queue');
+        $response = Http::get($this->api_url . '/queues/counters/current');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->currentQueues = $response['data'];
+        $this->currentQueues = $response['data'] ?? [];
     }
 
     public function appSettings()

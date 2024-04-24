@@ -17,6 +17,7 @@ class MenuController extends Component
     public $logo;
     public $address;
     public $api_url;
+    
     public function mount($user, $token, $darkMode)
     {
         $this->token = $token;

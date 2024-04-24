@@ -37,7 +37,6 @@ class QueuesMenus extends Component
         return [
             'echo:queues-menus-channel,QueuesMenusEvent' => 'getQueuesInfo',
             'echo:services-menus-channel,ServicesMenusEvent' => 'getQueuesInfo',
-            // 'echo:button-state-channel,ButtonStateEvent' => 'getQueuesInfo'
         ];
     }
 
@@ -63,7 +62,7 @@ class QueuesMenus extends Component
     public function getQueue()
     {
         $responses = Http::pool(fn (Pool $pool) => [
-            $pool->get($this->api_url . '/queues/users/' . $this->user['id'] . '/current-queue'),
+            $pool->get($this->api_url . '/queues/users/' . $this->user['id'] . '/current'),
             $pool->get($this->api_url . '/counters/users/' . $this->user['id']),
             $pool->get($this->api_url . '/queues/users/' . $this->user['id'] . '?page=' . $this->currentPage)
         ]);

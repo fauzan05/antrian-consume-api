@@ -39,7 +39,6 @@ function panggil(audioFiles) {
   const number = audioFiles[0][(audioFiles[0]).length-1];
   const services = audioFiles[0][(audioFiles[0]).length-2];
   const counterId = audioFiles[0][(audioFiles[0]).length-3];
-  const currentQueue = [];
 
   Livewire.dispatch('currentQueueUpdated', { queueUpdated: [number, services] });
   // console.log(audioFiles);
@@ -56,7 +55,7 @@ function panggil(audioFiles) {
         audio.play();
         currentAudioIndex++;
       } else if (currentAudioIndex >= audioFiles[0].length-3 ){
-        // currentQueue.push(counterId); // array index ke-0
+        // mengenable button antrian sesuai dengan loket yang barusan memencetnya 
         Livewire.dispatch('buttonState', { counter_id: counterId });
         audioFiles.shift();
         isPlaying = false;
