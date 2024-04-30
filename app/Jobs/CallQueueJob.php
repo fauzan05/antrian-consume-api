@@ -50,7 +50,7 @@ class CallQueueJob implements ShouldQueue
             'counter_id' => $this->counter_id,
         ]);
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $data = [$this->number, $this->service_name, $this->counter_id, (($this->service_role == "poly") ? $response['data'][0]['link-audio-poly'] : $response['data'][0]['link-audio-registration'])];
+        $data = [$this->number, $this->service_name, $this->counter_id, (($this->service_role == "poly") ? $response['data']['link-audio-poly'] : $response['data']['link-audio-registration'])];
         Broadcast(new QueuesMenusEvent());
         Broadcast(new CurrentQueuesEvent($data));
     }
