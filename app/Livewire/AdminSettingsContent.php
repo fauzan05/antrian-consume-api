@@ -138,19 +138,19 @@ class AdminSettingsContent extends Component
             $getRealPath = $this->video->getRealPath();
             $hashName = $this->video->hashName();
             File::move($getRealPath, public_path('/assets/video/') . $hashName);
-            Http::withHeaders($this->headers)->post($this->api_url . '/app/video', [
+            Http::withHeaders($this->headers)->patch($this->api_url . '/app/video', [
                 'video_filename' => $hashName
             ]);
         }
 
         if (!empty($this->logo)) {
             // hapus dulu file logo sebelumnya
-            File::delete(public_path('/assets/logo') . $this->selected_logo);
+            File::delete(public_path('/assets/logo/') . $this->selected_logo);
 
             $getRealPath = $this->logo->getRealPath();
             $hashName = $this->logo->hashName();
             File::move($getRealPath, public_path('/assets/logo/') . $hashName);
-            Http::withHeaders($this->headers)->post($this->api_url . '/app/logo', [
+            Http::withHeaders($this->headers)->patch($this->api_url . '/app/logo', [
                 'logo_filename' => $hashName
             ]);
         }
@@ -161,7 +161,7 @@ class AdminSettingsContent extends Component
                 ['name' => 'required|min:3|max:50|string', 'address' => 'required|min:3|max:100|string'],
                 ['required' => 'Kolom :attribute harus diisi', 'min' => 'Kolom :atttribute minimal :min karakter', 'max' => 'Kolom :attribute maksimal :max karakter']
             )->validate();
-            Http::withHeaders($this->headers)->put($this->api_url . '/app/identity', [
+            Http::withHeaders($this->headers)->patch($this->api_url . '/app/identity', [
                 'name_of_health_institute' => trim($validator['name']),
                 'address_of_health_institute' => trim($validator['address'])
             ]);
@@ -185,7 +185,7 @@ class AdminSettingsContent extends Component
                 ['required' => 'Warna :attribute harus diisi', 'max' => 'Warna tidak valid', 'min' => 'Warna tidak valid']
             )->validate();
 
-            Http::withHeaders($this->headers)->put($this->api_url . '/app/header-footer/colors', [
+            Http::withHeaders($this->headers)->patch($this->api_url . '/app/header-footer/colors', [
                 'header_color' => trim($this->headerColor),
                 'footer_color' => trim($this->footerColor),
                 'text_header_color' => trim($this->textHeaderColor),

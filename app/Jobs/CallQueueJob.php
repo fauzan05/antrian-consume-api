@@ -5,13 +5,10 @@ namespace App\Jobs;
 use Illuminate\Bus\Queueable;
 use App\Events\CurrentQueuesEvent;
 use App\Events\QueuesMenusEvent;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class CallQueueJob implements ShouldQueue
