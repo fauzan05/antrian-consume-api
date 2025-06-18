@@ -81,7 +81,7 @@
                 <div class="menu-bar">
                     <ul class="menu-links rounded shadow-sm">
                         <li class="nav-link nav-text-border">
-                            <span class="text nav-text">Dashboard | Admin</span>
+                            <span class="text nav-text">Dashboard Admin</span>
                         </li>
                         {{-- <input type="hidden" name="token" data-csrf="{{csrf_token()}}" value="{{ csrf_token() }}"> --}}
                         <li class="nav-link mode">
