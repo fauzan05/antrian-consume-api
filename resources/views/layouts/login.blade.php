@@ -15,12 +15,8 @@
 
 <body>
 
-    {{-- Header --}}
-    @include('layouts.login.header')
     {{-- Content --}}
     @yield('content')
-    {{-- Footer --}}
-    @include('layouts.login.footer')
     @stack('js')
     
 </body>

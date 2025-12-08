@@ -16,11 +16,15 @@
 <body>
 
     {{-- Header --}}
-    @include('layouts.app.header')
+    @if(!Request::is('/'))
+        @include('layouts.app.header')
+    @endif
     {{-- Content --}}
     @yield('content')
     {{-- Footer --}}
-    @include('layouts.app.footer')
+    @if(!Request::is('/'))
+        @include('layouts.app.footer')
+    @endif
     @stack('js')
     
 </body>

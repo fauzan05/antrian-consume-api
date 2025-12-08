@@ -14,14 +14,10 @@
     <title>@yield('title')</title>
 </head>
 
-<body class="bg-body-tertiary">
+<body>
 
-    {{-- Header --}}
-    @include('layouts.services.header')
     {{-- Body --}}
     @yield('content')
-    {{-- Footer --}}
-    @include('layouts.services.footer')
     @stack('js')
 
 </body>
