@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cookie;
 use Livewire\Component;
 
 class ChangePassword extends Component
@@ -14,6 +15,7 @@ class ChangePassword extends Component
     public $message;
     public $api_url;
     public $headers;
+    public $darkMode = false;
     protected $rules = [
         'old_password' => 'required|min:3',
         'new_password' => 'required|min:3',
@@ -22,6 +24,7 @@ class ChangePassword extends Component
     public function mount($token)
     {
         $this->token = $token;
+        $this->darkMode = Cookie::get('dark_mode') === 'true';
         $this->headers = [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->token,

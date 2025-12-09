@@ -29,10 +29,14 @@ class AuthController extends Controller
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $request->cookie('token')
         ])->get($this->api_url . '/users/current');
+        
         if($response->unauthorized()){
             return redirect('/login');
         }
+        
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        
+        // Return Livewire component view
         return view('dashboard.operator.home', ['user' => $response['data']]);
     }
 

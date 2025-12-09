@@ -1,133 +1,254 @@
-<div class="row m-2 d-flex flex-column justify-content-center align-items-center">
-    <div class="col-12 m-3">
-        <div class="row d-flex flex-row justify-content-center align-items-center">
-            @foreach ($counters as $item)
-                <div class="col-2 m-3">
-                    <div class="card shadow-click bg-success text-center" style="width: 100%;">
-                        <div class="card-body">
-                            <h3 class="card-text">{{ $item['name'] }}</h3>
-                            <hr>
-                            <h4>{{ $item['number'] }}</h4>
+<div>
+    {{-- Counter Cards Section --}}
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="fw-semibold mb-1 text-body">Counter Aktif</h5>
+                <p class="small mb-0 text-body-secondary">Daftar counter yang sedang beroperasi</p>
+            </div>
+            <span class="badge rounded-pill bg-body-secondary text-body" style="font-weight: 500; padding: 8px 16px;">{{ count($counters) }} Counter</span>
+        </div>
+
+        <div class="row g-3">
+            @forelse ($counters as $counter)
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                    <div class="counter-card bg-body border rounded-3" style="padding: 24px; text-align: center; transition: all 0.2s ease;">
+                        <div class="bg-body-secondary rounded-2" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                            <i class="fas fa-desktop text-body-secondary" style="font-size: 20px;"></i>
                         </div>
+                        <h6 class="fw-semibold mb-2 text-body" style="font-size: 14px;">{{ $counter['name'] }}</h6>
+                        <hr class="my-2">
+                        <h4 class="fw-bold mb-0 text-success" style="font-size: 28px;">{{ $counter['number'] }}</h4>
+                        <small class="text-body-secondary" style="font-size: 12px;">Nomor Antrian</small>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-circle me-3" style="font-size: 20px;"></i>
+                        <div>Tidak ada counter tersedia saat ini</div>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
-    <hr>
-    <input id="counter_id" value="{{ $counter_id }}" hidden>
-    <div class="col-12">
-        <div class="row d-flex flex-row justify-content-center align-items-start">
-            <div class="col-3 m-3">
-                <div class="row d-flex flex-column justify-content-center align-items-center">
-                    <div class="col-12 text-center mb-3">
-                        <h3>Informasi</h3>
-                    </div>
-                    <div class="col-12 m-3">
-                        <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
-                            <div class="card-body">
-                                <h5>Sisa Antrian <i class="fa-solid fa-user-group"></i></h5>
-                                <hr>
-                                <h5>{{ $remainQueue }}</h5>
+
+    <hr class="my-4">
+
+    {{-- Queue Information & List Section --}}
+    <input id="counter_id" value="{{ $counter_id }}" type="hidden">
+
+    <div class="row g-4">
+        {{-- Queue Information Cards --}}
+        <div class="col-lg-3">
+            <div class="sticky-top" style="top: 100px;">
+                <h5 class="fw-semibold mb-4 text-body">Statistik Antrian</h5>
+                
+                <div class="d-flex flex-column gap-3">
+                    <div class="bg-body border rounded-3" style="padding: 20px;">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-warning bg-opacity-10 rounded-2" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-users text-warning" style="font-size: 18px;"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <small class="d-block mb-1 text-body-secondary" style="font-size: 12px; font-weight: 500;">Sisa Antrian</small>
+                                <h4 class="mb-0 fw-bold text-body">{{ $remainQueue }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 m-3">
-                        <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
-                            <div class="card-body">
-                                <h5>Jumlah Antrian <i class="fa-solid fa-user-pen"></i></h5>
-                                <hr>
-                                <h5>{{ $totalQueue }}</h5>
+                    
+                    <div class="bg-body border rounded-3" style="padding: 20px;">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary bg-opacity-10 rounded-2" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-clipboard-list text-primary" style="font-size: 18px;"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <small class="d-block mb-1 text-body-secondary" style="font-size: 12px; font-weight: 500;">Total Antrian</small>
+                                <h4 class="mb-0 fw-bold text-body">{{ $totalQueue }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 m-3">
-                        <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
-                            <div class="card-body">
-                                <h5>Antrian Sekarang <i class="fa-solid fa-user-check"></i></h5>
-                                <hr>
-                                <h5>{{ $currentQueue }}</h5>
+                    
+                    <div class="bg-body border border-success border-2 rounded-3" style="padding: 20px;">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-success bg-opacity-10 rounded-2" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user-check text-success" style="font-size: 18px;"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <small class="d-block mb-1 text-success" style="font-size: 12px; font-weight: 600;">Sekarang</small>
+                                <h4 class="mb-0 fw-bold text-success">{{ $currentQueue }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 m-3">
-                        <div class="card info-antrian shadow-sm text-center" style="width: 100%;">
-                            <div class="card-body">
-                                <h5>Antrian Selanjutnya <i class="fa-solid fa-user-clock"></i></h5>
-                                <hr>
-                                <h5>{{ $nextQueue }}</h5>
+                    
+                    <div class="bg-body border rounded-3" style="padding: 20px;">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-info bg-opacity-10 rounded-2" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-clock text-info" style="font-size: 18px;"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <small class="d-block mb-1 text-body-secondary" style="font-size: 12px; font-weight: 500;">Selanjutnya</small>
+                                <h4 class="mb-0 fw-bold text-body">{{ $nextQueue }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-8 m-3 d-flex flex-column">
-                <div class="col-12 mb-4 text-center">
-                    <h3>List Antrian</h3>
+        </div>        {{-- Queue List Table --}}
+        <div class="col-lg-9">
+            <div class="bg-body border rounded-3 overflow-hidden">
+                <div class="border-bottom" style="padding: 20px;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="fw-semibold mb-1 text-body">Daftar Antrian</h5>
+                            <p class="small mb-0 text-body-secondary">Kelola dan panggil antrian pasien</p>
+                        </div>
+                        <button style="background: linear-gradient(135deg, #52c234 0%, #38a169 100%); border: none; border-radius: 8px; padding: 8px 16px; font-size: 14px; font-weight: 500; color: #fff; transition: all 0.2s; box-shadow: 0 2px 4px rgba(82, 194, 52, 0.2);" wire:click="$refresh" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(82, 194, 52, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(82, 194, 52, 0.2)'">
+                            <i class="fas fa-sync-alt me-2" style="font-size: 13px;"></i>Refresh
+                        </button>
+                    </div>
                 </div>
-                <div class="col-12">
-                    <table class="table align-middle table-responsive table-hover shadow-sm">
-                        <thead>
-                            <tr class="table-active">
-                                <th scope="col">No</th>
-                                <th scope="col">Nomor Antrian</th>
-                                <th scope="col">Jenis Layanan</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Panggil</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $i = 1
-                            @endphp
-                            @if($queues['data'] != null)
-                            @foreach ($queues['data'] as $item)
-                                <tr>
-                                    <th scope="row">{{ $i++ }}</th>
-                                    <td>{{ $item['number'] }}</td>
-                                    <td>{{ $item['service_name'] }}</td>
-                                    <td>{{ $item['status'] }}</td>
-                                    <td><button href="#" id="{{ $counter_id }}"
-                                            wire:click="calling('{{ $item['id'] }}', '{{ $item['number'] }}', '{{ $item['service_name'] }}', '{{ $counter_id }}')"
-                                            role="button" type="button" class="btn ms-4 panggil" style="color: red"
-                                            x-bind:disabled="{{ $isButtonDisabled }}">
-                                            <i class="fa-solid fa-microphone"></i>
-                                        </button>
-                                    </td>
+
+                <div style="padding: 0;">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0" style="border-collapse: separate; border-spacing: 0;">
+                            <thead>
+                                <tr class="table-light">
+                                    <th scope="col" class="text-center text-body-secondary" style="width: 60px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">No</th>
+                                    <th scope="col" class="text-body-secondary" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Nomor Antrian</th>
+                                    <th scope="col" class="text-body-secondary" style="padding: 16px; font-size: 13px; font-weight: 600; border: none;">Jenis Layanan</th>
+                                    <th scope="col" class="text-center text-body-secondary" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Status</th>
+                                    <th scope="col" class="text-center" style="width: 120px; padding: 16px; font-size: 13px; font-weight: 600; color: {{ $darkMode ? '#9ca3af' : '#6c757d' }}; border: none;">Aksi</th>
                                 </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse ($queues['data'] ?? [] as $index => $queue)
+                                    <tr class="queue-row" style="border-bottom: 1px solid {{ $darkMode ? '#374151' : '#f0f0f0' }}; transition: background 0.2s;">
+                                        <td class="text-center" style="padding: 16px; color: {{ $darkMode ? '#9ca3af' : '#6c757d' }}; font-size: 14px;">{{ $index + 1 }}</td>
+                                        <td style="padding: 16px;">
+                                            <span style="background: {{ $darkMode ? '#374151' : '#1a1a1a' }}; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 14px;">{{ $queue['number'] }}</span>
+                                        </td>
+                                        <td style="padding: 16px;">
+                                            <div class="d-flex align-items-center">
+                                                <span style="font-weight: 500; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; font-size: 14px;">{{ $queue['service_name'] }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" style="padding: 16px;">
+                                            @php
+                                                $statusStyles = match(strtolower($queue['status'])) {
+                                                    'waiting' => 'background: #fff3e0; color: #e65100; border: 1px solid #ffcc80;',
+                                                    'called' => 'background: #e1f5fe; color: #01579b; border: 1px solid #81d4fa;',
+                                                    'serving' => 'background: #e8eaf6; color: #283593; border: 1px solid #9fa8da;',
+                                                    'done' => 'background: #e8f5e9; color: #1b5e20; border: 1px solid #81c784;',
+                                                    default => 'background: #f5f5f5; color: #616161; border: 1px solid #e0e0e0;'
+                                                };
+                                            @endphp
+                                            <span style="{{ $statusStyles }} padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 12px; display: inline-block;">
+                                                {{ ucfirst($queue['status']) }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center" style="padding: 16px;">
+                                            <button 
+                                                wire:click="calling('{{ $queue['id'] }}', '{{ $queue['number'] }}', '{{ $queue['service_name'] }}', '{{ $counter_id }}')"
+                                                style="background: linear-gradient(135deg, #52c234 0%, #38a169 100%); border: none; color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; cursor: pointer; box-shadow: 0 2px 4px rgba(82, 194, 52, 0.2);"
+                                                onmouseover="if(!this.disabled) { this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(82, 194, 52, 0.3)'; }"
+                                                onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(82, 194, 52, 0.2)'; }"
+                                                @if($isButtonDisabled) disabled @endif
+                                                title="Panggil Antrian">
+                                                <i class="fas fa-bullhorn me-2" style="font-size: 12px;"></i>Panggil
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" style="padding: 60px; text-align: center;">
+                                            <div style="color: {{ $darkMode ? '#6b7280' : '#9e9e9e' }};">
+                                                <i class="fas fa-inbox" style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;"></i>
+                                                <p style="margin: 0; font-size: 14px; font-weight: 500;">Tidak ada antrian tersedia</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-12 mt-3 d-flex align-items-center justify-content-center">
-                    @php
-                            if($queues['last_page'] != null):
-                    @endphp
-                    <nav aria-label="...">
-                        <ul class="pagination">
-                            <li class="page-item {{ ($currentPage == 1) ? 'disabled' : '' }}" id="previous">
-                                <a href="#" wire:click.prevent="getPage('{{ $currentPage == 1 ? 1 : $currentPage-1 }}')" class="page-link">Sebelumnya</a>
-                            </li>
-                            
-                            @for ($i = 1; $i <= $queues['last_page']; $i++)
-                                <li class="page-item index-page {{($currentPage == $i) ? 'active' : ''}}" >
-                                    <a id="{{ $i }}" wire:click.prevent="getPage({{ $i }})" class="page-link"
-                                        href="#">{{ $i }}</a>
-                                </li>
-                            @endfor
-                            <li class="page-item {{ ($currentPage == $queues['last_page']) ? 'disabled' : '' }}" id="next">
-                                <a href="#" wire:click.prevent="getPage('{{ $currentPage == $queues['last_page'] ? $queues['last_page'] : $currentPage+1 }}')" class="page-link">Selanjutnya</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    @php
-                    endif;
-                            @endphp
-                </div>
-                <div>
-                </div>
+
+                {{-- Pagination --}}
+                @if (isset($queues['last_page']) && $queues['last_page'] > 1)
+                    <div class="border-top" style="padding: 20px;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-body-secondary" style="font-weight: 500;">
+                                Halaman {{ $currentPage }} dari {{ $queues['last_page'] }}
+                            </small>
+                            <nav aria-label="Queue pagination">
+                                <ul class="pagination pagination-sm mb-0" style="gap: 4px;">
+                                    <li class="page-item {{ $currentPage == 1 ? 'disabled' : '' }}">
+                                        <a href="#" 
+                                           wire:click.prevent="getPage({{ max(1, $currentPage - 1) }})" 
+                                           style="background: {{ $darkMode ? '#374151' : '#f8f9fa' }}; border: 1px solid {{ $darkMode ? '#4b5563' : '#e5e5e5' }}; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; transition: all 0.2s;"
+                                           onmouseover="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
+                                           onmouseout="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'">
+                                            <i class="fas fa-chevron-left" style="font-size: 12px;"></i>
+                                        </a>
+                                    </li>
+                                    
+                                    @for ($i = 1; $i <= $queues['last_page']; $i++)
+                                        @if ($i == 1 || $i == $queues['last_page'] || abs($i - $currentPage) <= 2)
+                                            <li class="page-item {{ $currentPage == $i ? 'active' : '' }}">
+                                                <a wire:click.prevent="getPage({{ $i }})" 
+                                                   style="{{ $currentPage == $i ? 'background: #52c234; border: 1px solid #52c234; color: #fff;' : 'background: ' . ($darkMode ? '#374151' : '#f8f9fa') . '; border: 1px solid ' . ($darkMode ? '#4b5563' : '#e5e5e5') . '; color: ' . ($darkMode ? '#f9fafb' : '#1a1a1a') . ';' }} padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; min-width: 36px; text-align: center; transition: all 0.2s; font-weight: 500; font-size: 13px; cursor: pointer;"
+                                                   onmouseover="if({{ $currentPage != $i ? 'true' : 'false' }}) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
+                                                   onmouseout="if({{ $currentPage != $i ? 'true' : 'false' }}) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'"
+                                                   href="#">
+                                                    {{ $i }}
+                                                </a>
+                                            </li>
+                                        @elseif (abs($i - $currentPage) == 3)
+                                            <li class="page-item disabled">
+                                                <span style="padding: 6px 12px; color: {{ $darkMode ? '#6b7280' : '#6c757d' }};">...</span>
+                                            </li>
+                                        @endif
+                                    @endfor
+                                    
+                                    <li class="page-item {{ $currentPage == $queues['last_page'] ? 'disabled' : '' }}">
+                                        <a href="#" 
+                                           wire:click.prevent="getPage({{ min($queues['last_page'], $currentPage + 1) }})" 
+                                           style="background: {{ $darkMode ? '#374151' : '#f8f9fa' }}; border: 1px solid {{ $darkMode ? '#4b5563' : '#e5e5e5' }}; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; transition: all 0.2s;"
+                                           onmouseover="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
+                                           onmouseout="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'">
+                                            <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
+@push('css')
+<style>
+    .counter-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(82, 194, 52, 0.15) !important;
+        border-color: var(--bs-success) !important;
+    }
+    
+    .queue-row:hover {
+        background: var(--bs-tertiary-bg) !important;
+    }
+    
+    .pagination .page-item.active a {
+        pointer-events: none;
+    }
+    
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+    }
+</style>
+@endpush

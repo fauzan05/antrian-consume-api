@@ -1,0 +1,127 @@
+/* Bootstrap 5 Dark Mode Enhancements */
+
+/* Smooth transition when switching between themes */
+:root {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-bs-theme="dark"] {
+    color-scheme: dark;
+}
+
+html[data-bs-theme="light"] {
+    color-scheme: light;
+}
+
+/* Enhanced card styles for dark mode */
+[data-bs-theme="dark"] .card {
+    background-color: var(--bs-dark-bg-subtle);
+    border-color: var(--bs-border-color);
+}
+
+/* Better border colors in dark mode */
+[data-bs-theme="dark"] .border,
+[data-bs-theme="dark"] .border-top,
+[data-bs-theme="dark"] .border-bottom,
+[data-bs-theme="dark"] .border-start,
+[data-bs-theme="dark"] .border-end {
+    border-color: var(--bs-border-color) !important;
+}
+
+/* Table improvements in dark mode */
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .table-light {
+    --bs-table-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-color: var(--bs-body-color);
+}
+
+/* Form controls in dark mode */
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    background-color: var(--bs-dark-bg-subtle);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .form-control:focus,
+[data-bs-theme="dark"] .form-select:focus {
+    background-color: var(--bs-dark-bg-subtle);
+    border-color: var(--bs-primary);
+    color: var(--bs-body-color);
+}
+
+/* Badge improvements */
+[data-bs-theme="dark"] .badge {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Alert improvements */
+[data-bs-theme="dark"] .alert {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Button outline improvements in dark mode */
+[data-bs-theme="dark"] .btn-outline-secondary {
+    border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+/* Dropdown improvements */
+[data-bs-theme="dark"] .dropdown-menu {
+    background-color: var(--bs-dark-bg-subtle);
+    border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Modal improvements */
+[data-bs-theme="dark"] .modal-content {
+    background-color: var(--bs-dark-bg-subtle);
+    border-color: var(--bs-border-color);
+}
+
+/* Pagination improvements */
+[data-bs-theme="dark"] .pagination {
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-color: var(--bs-border-color);
+    --bs-pagination-hover-bg: rgba(255, 255, 255, 0.1);
+    --bs-pagination-hover-border-color: var(--bs-border-color);
+    --bs-pagination-disabled-bg: transparent;
+    --bs-pagination-disabled-border-color: var(--bs-border-color);
+}
+
+/* Navbar and Sidebar improvements */
+[data-bs-theme="dark"] .sidebar {
+    background-color: var(--bs-dark-bg-subtle) !important;
+}
+
+/* Success color adjustments for better visibility in dark mode */
+[data-bs-theme="dark"] {
+    --bs-success: #52c234;
+    --bs-success-rgb: 82, 194, 52;
+}
+
+/* Smooth transitions for all theme-aware elements */
+.bg-body,
+.bg-body-secondary,
+.bg-body-tertiary,
+.text-body,
+.text-body-secondary,
+.border,
+.card,
+.table,
+.form-control,
+.btn {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}

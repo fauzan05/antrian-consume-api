@@ -6,6 +6,7 @@ use App\Jobs\CallQueueJob;
 use Illuminate\Http\Client\Pool;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cookie;
 use Livewire\Attributes\On;
 
 class QueuesMenus extends Component
@@ -23,12 +24,14 @@ class QueuesMenus extends Component
     public $currentQueue; // antrian sekarang
     public $nextQueue; // antrian selanjutnya
     public $api_url;
+    public $darkMode = false;
 
     public function mount($user, $token)
     {
         $this->token = $token;
         $this->api_url = config('services.api_url');
         $this->user = $user;
+        $this->darkMode = Cookie::get('dark_mode') === 'true';
         $this->getQueue();
     }
 
