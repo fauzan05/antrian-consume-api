@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Http;
+use App\Livewire\AdminCountersContent;
 
 class CounterEditForm extends Component
 {
@@ -51,6 +52,7 @@ class CounterEditForm extends Component
         $response = Http::withHeaders($this->headers)->put($this->api_url . '/counters/' . $this->id, [
             'name' => $this->name,
             'user_id' => $this->user_id,
+            'current_user_id' => $this->counter['user_id'],
             'service_id' => $this->service_id,
             'is_active' => (boolean)$this->is_active
         ]);
@@ -69,31 +71,22 @@ class CounterEditForm extends Component
             return session()->flash('status_edit_counter', ['color' => 'danger', 'message' => json_decode($response->body(), JSON_OBJECT_AS_ARRAY)['error']['error_message']]);
         }
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        session()->flash('status', ['page' => 2, 'message' => 'Berhasil mengubah ' . $this->counter['name']]);
-        $this->redirect('/admin');
+        
+        // Dispatch to parent component to refresh data
+        $this->dispatch('counter-updated')->to(AdminCountersContent::class);
+        
+        // Dispatch to browser to close modal
+        $this->js("
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editModalCounter'));
+            if (modal) modal.hide();
+        ");
+        
+        session()->flash('status', ['message' => 'Berhasil mengubah ' . $this->counter['name']]);
+        $this->flush();
     }
     public function flush()
     {
         session()->forget('status_edit_counter');
-    }
-
-    public function delete()
-    {   
-        Http::withHeaders($this->headers)->delete($this->api_url . '/counters/' . $this->id);
-        session()->flash('status', ['page' => 2, 'message' => 'Berhasil menghapus ' . $this->counter['name']]);
-        $this->redirect('/admin');
-    }
-
-    #[On('counter-updated')]
-    public function counterDataEdit($data)
-    {
-        // merefresh tampilan edit counter
-        unset($this->message);
-        $this->counter = $data['counter'];
-        $this->services = $data['services'];
-        $this->users = $data['users'];
-        $this->reset('name', 'user_id', 'service_id', 'is_active');
-        $this->setCurrentEditForm();
     }
 
     public function setCurrentEditForm()

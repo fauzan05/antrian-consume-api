@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Http;
+use App\Livewire\AdminCountersContent;
 
 class CounterCreateForm extends Component
 {
@@ -68,8 +69,19 @@ class CounterCreateForm extends Component
             return;
         }
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        session()->flash('status', ['page' => 2, 'message' => 'Berhasil membuat ' . $this->name]);
-        $this->redirect('/admin');
+        
+        // Dispatch to parent component to refresh data
+        $this->dispatch('counter-updated')->to(AdminCountersContent::class);
+        
+        // Dispatch to browser to close modal
+        $this->js("
+            const modal = bootstrap.Modal.getInstance(document.getElementById('createModalCounter'));
+            if (modal) modal.hide();
+        ");
+        
+        session()->flash('status', ['message' => 'Berhasil membuat ' . $this->name]);
+        $this->flush();
+        $this->setCurrentCreateForm();
     }
     #[On('flush')]
     public function flush()

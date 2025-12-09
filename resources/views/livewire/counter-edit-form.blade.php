@@ -1,17 +1,15 @@
-<div class="mb-3 test">
+<div>
     @if (session('status_edit_counter'))
-        <div class="d-flex flex-column justify-content-center align-items-center">
-            <div class="alert alert-{{ session('status_edit_counter')['color'] }} text-center" role="alert"
-                style="width: 80%;">
-                {{ session('status_edit_counter')['message'] }}
-            </div>
+        <div class="alert alert-{{ session('status_edit_counter')['color'] }} alert-dismissible fade show mb-3" role="alert">
+            {{ session('status_edit_counter')['message'] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
     <form wire:submit="updateCounter">
-        <div class="forms gap-3">
+        <div class="d-flex flex-column gap-3 mb-3">
             <div>
-                <label for="exampleFormControlInput1" class="form-label">Nama Loket</label>
-                <select wire:model.live="name" name="name" class="form-select" required>
+                <label class="form-label fw-medium text-body" style="font-size: 13px;">Nama Loket</label>
+                <select wire:model.live="name" name="name" class="form-select" required style="border-radius: 8px;">
                     @for ($i = 1; $i <= 10; $i++)
                         @if ($counter['name'] != 'Loket ' . $i)
                             <option value="Loket {{ $i }}">Loket {{ $i }}</option>
@@ -31,9 +29,8 @@
                 </select>
             </div>
             <div>
-                <label for="exampleFormControlInput1" class="form-label">Pilih Layanan</label>
-                <select wire:model.live="service_id" name="service_id" class="form-select"
-                    aria-label="Default select example">
+                <label class="form-label fw-medium text-body" style="font-size: 13px;">Pilih Layanan</label>
+                <select wire:model.live="service_id" name="service_id" class="form-select" style="border-radius: 8px;">
                     @if (empty($service_id))
                         <option value="" disabled selected>Pilih Layanan</option>
                     @endif
@@ -47,8 +44,8 @@
                 </select>
             </div>
             <div>
-                <label for="exampleFormControlInput1" class="form-label">Pilih Operator</label>
-                <select wire:model.live="user_id" name="user_id" class="form-select" aria-label="Default select example">
+                <label class="form-label fw-medium text-body" style="font-size: 13px;">Pilih Operator</label>
+                <select wire:model.live="user_id" name="user_id" class="form-select" style="border-radius: 8px;">
                     @foreach ($users as $user)
                         @if ($user_id != $user['id'])
                             <option value="{{ $user['id'] }}">{{ $user['name'] }}</option>
@@ -59,36 +56,16 @@
                 </select>
             </div>
             <div>
-                <label for="exampleFormControlInput1" class="form-label">Status</label>
-                <select wire:model.live="is_active" name="is_active" class="form-select" aria-label="Default select example">
+                <label class="form-label fw-medium text-body" style="font-size: 13px;">Status</label>
+                <select wire:model.live="is_active" name="is_active" class="form-select" style="border-radius: 8px;">
                     <option value="1" @if ($is_active == true) selected @endif>Aktif</option>
                     <option value="0" @if ($is_active == false) selected @endif>Tidak Aktif</option>
                 </select>
             </div>
         </div>
-        <div class="d-flex flex-column justify-content-center align-items-center gap-3 mt-3">
-            <button type="submit" class="btn btn-primary" style="width: 80%;">Simpan</button>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#modalDelete" class="btn btn-danger"
-                style="width: 80%;">Hapus</button>
+        <div class="modal-footer border-0 pt-3">
+            <button type="button" wire:click="flush()" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 8px;">Batal</button>
+            <button type="submit" class="btn btn-primary" style="border-radius: 8px;">Simpan Perubahan</button>
         </div>
     </form>
-    <!-- Modal Delete-->
-    <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Apakah anda ingin menghapus loket {{ $name ?? '' }} ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="flush()" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Batal</button>
-                    <button type="button" wire:click="delete()" class="btn btn-danger">Hapus</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

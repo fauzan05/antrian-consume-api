@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Illuminate\Http\Client\Pool;
+use Livewire\Attributes\On;
 
 class AdminCountersContent extends Component
 {
@@ -13,6 +14,8 @@ class AdminCountersContent extends Component
     public $currentDataEdit; // data services, users, dan current counter yang dipilih
     public $dataCreate;
     public $counterId;
+    public $selectedCounterId;
+    public $selectedCounterName;
     public $users;
     public $services;
     public $token;
@@ -54,16 +57,9 @@ class AdminCountersContent extends Component
             'users' => $this->users,
         ];
 
-        if ($this->counterId != $counterId) {
-            $this->isEdit = true;
-            $this->currentDataEdit = $dataEdit;
-            $this->counterId = $counterId;
-            $this->dispatch('counter-updated', data: $dataEdit); // memperbaharui counter ketika di klik lagi
-        } elseif ($this->counterId == $counterId) {
-            $this->isEdit = $this->isEdit ? false : true;
-            $this->counterId = $counterId;
-            $this->currentDataEdit = $dataEdit;
-        }
+        $this->isEdit = true;
+        $this->currentDataEdit = $dataEdit;
+        $this->counterId = $counterId;
     }
 
     public function getData()
@@ -81,6 +77,47 @@ class AdminCountersContent extends Component
         $response = Http::get($this->api_url . '/counters');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->counters = $response['data'] ?? [];
+    }
+
+    public function selectCounter($id, $name)
+    {
+        $this->selectedCounterId = $id;
+        $this->selectedCounterName = $name;
+    }
+
+    public function deleteCounter()
+    {
+        if ($this->selectedCounterId) {
+            $response = Http::withToken($this->token)->delete($this->api_url . '/counters/' . $this->selectedCounterId);
+            
+            if ($response->successful()) {
+                session()->flash('status', [
+                    'message' => 'Loket berhasil dihapus!'
+                ]);
+                
+                // Close modal with JavaScript
+                $this->js("
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModalCounter'));
+                    if (modal) modal.hide();
+                ");
+                
+                // Refresh data
+                $this->getAllCounters();
+                $this->getData();
+                $this->createCounter();
+            }
+            
+            $this->selectedCounterId = null;
+            $this->selectedCounterName = null;
+        }
+    }
+
+    #[On('counter-updated')]
+    public function refreshCounters()
+    {
+        $this->getAllCounters();
+        $this->getData();
+        $this->createCounter();
     }
 
     public function render()
