@@ -59,10 +59,6 @@
 </head>
 
 <body>
-    <div class="download-message">
-        ✓ Tiket antrian Anda sedang diunduh...
-    </div>
-    
     <div class="container">
         <div>
             <span><strong>{{ $app_settings['name_of_health_institute'] }}</strong>

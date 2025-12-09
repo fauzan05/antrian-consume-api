@@ -46,7 +46,7 @@ class ServicesMenus extends Component
         
         Broadcast(new ServicesMenusEvent());
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        $this->redirect('/print-queue/' . $response['data']['id']);
+        $this->dispatch('redirect-to-print', url: '/print-queue/' . $response['data']['id']);
     }
     public function render()
     {

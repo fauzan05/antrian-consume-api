@@ -237,24 +237,9 @@
 
 @push('js')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded');
-        console.log('Livewire:', typeof Livewire !== 'undefined' ? 'Loaded' : 'Not Loaded');
-        
-        // Debug: log semua card yang ada
-        const cards = document.querySelectorAll('.service-card');
-        console.log('Service cards found:', cards.length);
-        
-        // Debug: cek apakah ada wire:id pada component
-        const livewireComponent = document.querySelector('[wire\\:id]');
-        console.log('Livewire component found:', livewireComponent ? 'Yes' : 'No');
-        if (livewireComponent) {
-            console.log('Wire ID:', livewireComponent.getAttribute('wire:id'));
-        }
-        
-        // Debug: cek wire:click pada cards
-        cards.forEach((card, index) => {
-            console.log(`Card ${index} has wire:click:`, card.hasAttribute('wire:click'));
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('redirect-to-print', (event) => {
+            window.location.href = event.url;
         });
     });
 </script>
