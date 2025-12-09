@@ -27,34 +27,39 @@ class Login extends Component
             'username' => $this->username,
             'password' => $this->password,
         ]);
+
         if ($response->unauthorized()) {
-            $response->body();
             $this->message = $response['error']['error_message'];
             $this->reset('username','password');
             return;
         }
+        
         if ($response->unprocessableEntity()) {
             return redirect('unprocess');
         }
+        
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
-        // dd($response);
+        
         if (!$response) {
             $this->message = "Internal Server Error";
             return;
         }
+        
+        $token = $response['token'];
         $role = $response['data']['role'];
+        
+        // Set cookies
+        Cookie::queue('token', $token, 1440);
+        
+        if(!Cookie::get('dark-mode')){
+            Cookie::queue('dark-mode', false);
+        }
+        
+        // Redirect based on role
         if ($role == 'operator') {
-            Cookie::queue('token', $response['token'], 1440);
-            if(!Cookie::get('dark-mode')){
-                Cookie::queue('dark-mode', (boolean)false);
-            }
-            return redirect('operator')->with('token', $response['token']);
+            return $this->redirect('/operator', true);
         } else {
-            Cookie::queue('token', $response['token'], 1440);
-            if(!Cookie::get('dark-mode')){
-                Cookie::queue('dark-mode', (boolean)false);
-            }
-            return redirect('admin')->with('token', $response['token']);
+            return $this->redirect('/admin', true);
         }
     }
     public function render()

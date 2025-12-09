@@ -22,6 +22,10 @@ class ServicesMenus extends Component
     {
         $response = Http::get($this->api_url . '/services');
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
+        if (!$response) {
+            $this->services = [];
+            return;
+        }
         $response = array_filter($response['data'], function($var){
             return $var['role'] == 'poly';
         });
@@ -33,12 +37,13 @@ class ServicesMenus extends Component
         $response = Http::post($this->api_url . '/queues', [
             'poly_service_id' => $id
         ]);
-        // dd($response);
+        
         if($response->forbidden()) {
             $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
             session()->now('status', $response['error']['error_message']);
             return;
         }
+        
         Broadcast(new ServicesMenusEvent());
         $response = json_decode($response->body(), JSON_OBJECT_AS_ARRAY);
         $this->redirect('/print-queue/' . $response['data']['id']);

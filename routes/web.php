@@ -27,7 +27,7 @@ Route::get('/', [AuthController::class, 'index']);
 Route::get('/login', [AuthController::class, 'getLogin']);
 Route::get('/operator', [AuthController::class, 'getOperatorView'])->middleware('userAuth');
 Route::get('/operator/pengaturan', [AuthController::class, 'operatorSettings'])->middleware('userAuth');
-Route::get('/admin', [AuthController::class, 'getAdminView']);
+Route::get('/admin', [AuthController::class, 'getAdminView'])->middleware('userAuth');
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/unprocess', [AuthController::class, 'unprocess']);
 Route::get('/services', [ServiceController::class, 'index']);
