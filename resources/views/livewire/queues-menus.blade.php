@@ -114,23 +114,23 @@
                         <table class="table align-middle mb-0" style="border-collapse: separate; border-spacing: 0;">
                             <thead>
                                 <tr class="table-light">
-                                    <th scope="col" class="text-center text-body-secondary" style="width: 60px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">No</th>
-                                    <th scope="col" class="text-body-secondary" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Nomor Antrian</th>
-                                    <th scope="col" class="text-body-secondary" style="padding: 16px; font-size: 13px; font-weight: 600; border: none;">Jenis Layanan</th>
-                                    <th scope="col" class="text-center text-body-secondary" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Status</th>
-                                    <th scope="col" class="text-center" style="width: 120px; padding: 16px; font-size: 13px; font-weight: 600; color: {{ $darkMode ? '#9ca3af' : '#6c757d' }}; border: none;">Aksi</th>
+                                    <th scope="col" class="text-center" style="width: 60px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">No</th>
+                                    <th scope="col" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Nomor Antrian</th>
+                                    <th scope="col" style="padding: 16px; font-size: 13px; font-weight: 600; border: none;">Jenis Layanan</th>
+                                    <th scope="col" class="text-center" style="width: 140px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Status</th>
+                                    <th scope="col" class="text-center" style="width: 120px; padding: 16px; font-size: 13px; font-weight: 600; border: none;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($queues['data'] ?? [] as $index => $queue)
-                                    <tr class="queue-row" style="border-bottom: 1px solid {{ $darkMode ? '#374151' : '#f0f0f0' }}; transition: background 0.2s;">
-                                        <td class="text-center" style="padding: 16px; color: {{ $darkMode ? '#9ca3af' : '#6c757d' }}; font-size: 14px;">{{ $index + 1 }}</td>
+                                    <tr class="queue-row border-bottom" style="transition: background 0.2s;">
+                                        <td class="text-center text-body-secondary" style="padding: 16px; font-size: 14px;">{{ $index + 1 }}</td>
                                         <td style="padding: 16px;">
-                                            <span style="background: {{ $darkMode ? '#374151' : '#1a1a1a' }}; color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 14px;">{{ $queue['number'] }}</span>
+                                            <span class="badge bg-dark text-white" style="padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 14px;">{{ $queue['number'] }}</span>
                                         </td>
                                         <td style="padding: 16px;">
                                             <div class="d-flex align-items-center">
-                                                <span style="font-weight: 500; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; font-size: 14px;">{{ $queue['service_name'] }}</span>
+                                                <span class="text-body" style="font-weight: 500; font-size: 14px;">{{ $queue['service_name'] }}</span>
                                             </div>
                                         </td>
                                         <td class="text-center" style="padding: 16px;">
@@ -162,7 +162,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="5" style="padding: 60px; text-align: center;">
-                                            <div style="color: {{ $darkMode ? '#6b7280' : '#9e9e9e' }};">
+                                            <div class="text-body-secondary">
                                                 <i class="fas fa-inbox" style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;"></i>
                                                 <p style="margin: 0; font-size: 14px; font-weight: 500;">Tidak ada antrian tersedia</p>
                                             </div>
@@ -186,9 +186,8 @@
                                     <li class="page-item {{ $currentPage == 1 ? 'disabled' : '' }}">
                                         <a href="#" 
                                            wire:click.prevent="getPage({{ max(1, $currentPage - 1) }})" 
-                                           style="background: {{ $darkMode ? '#374151' : '#f8f9fa' }}; border: 1px solid {{ $darkMode ? '#4b5563' : '#e5e5e5' }}; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; transition: all 0.2s;"
-                                           onmouseover="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
-                                           onmouseout="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'">
+                                           class="btn btn-outline-secondary btn-sm rounded-2 text-body"
+                                           style="padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block;">
                                             <i class="fas fa-chevron-left" style="font-size: 12px;"></i>
                                         </a>
                                     </li>
@@ -197,16 +196,15 @@
                                         @if ($i == 1 || $i == $queues['last_page'] || abs($i - $currentPage) <= 2)
                                             <li class="page-item {{ $currentPage == $i ? 'active' : '' }}">
                                                 <a wire:click.prevent="getPage({{ $i }})" 
-                                                   style="{{ $currentPage == $i ? 'background: #52c234; border: 1px solid #52c234; color: #fff;' : 'background: ' . ($darkMode ? '#374151' : '#f8f9fa') . '; border: 1px solid ' . ($darkMode ? '#4b5563' : '#e5e5e5') . '; color: ' . ($darkMode ? '#f9fafb' : '#1a1a1a') . ';' }} padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; min-width: 36px; text-align: center; transition: all 0.2s; font-weight: 500; font-size: 13px; cursor: pointer;"
-                                                   onmouseover="if({{ $currentPage != $i ? 'true' : 'false' }}) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
-                                                   onmouseout="if({{ $currentPage != $i ? 'true' : 'false' }}) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'"
+                                                   class="btn {{ $currentPage == $i ? 'btn-success' : 'btn-outline-secondary' }} btn-sm rounded-2 {{ $currentPage == $i ? 'text-white' : 'text-body' }}"
+                                                   style="padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; min-width: 36px; text-align: center; font-weight: 500; font-size: 13px; cursor: pointer;"
                                                    href="#">
                                                     {{ $i }}
                                                 </a>
                                             </li>
                                         @elseif (abs($i - $currentPage) == 3)
                                             <li class="page-item disabled">
-                                                <span style="padding: 6px 12px; color: {{ $darkMode ? '#6b7280' : '#6c757d' }};">...</span>
+                                                <span class="text-body-secondary" style="padding: 6px 12px;">...</span>
                                             </li>
                                         @endif
                                     @endfor
@@ -214,9 +212,8 @@
                                     <li class="page-item {{ $currentPage == $queues['last_page'] ? 'disabled' : '' }}">
                                         <a href="#" 
                                            wire:click.prevent="getPage({{ min($queues['last_page'], $currentPage + 1) }})" 
-                                           style="background: {{ $darkMode ? '#374151' : '#f8f9fa' }}; border: 1px solid {{ $darkMode ? '#4b5563' : '#e5e5e5' }}; color: {{ $darkMode ? '#f9fafb' : '#1a1a1a' }}; padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block; transition: all 0.2s;"
-                                           onmouseover="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#4b5563' : '#e9ecef' }}'"
-                                           onmouseout="if(!this.parentElement.classList.contains('disabled')) this.style.background='{{ $darkMode ? '#374151' : '#f8f9fa' }}'">
+                                           class="btn btn-outline-secondary btn-sm rounded-2 text-body"
+                                           style="padding: 6px 12px; border-radius: 8px; text-decoration: none; display: inline-block;">
                                             <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
                                         </a>
                                     </li>
@@ -246,9 +243,33 @@
         pointer-events: none;
     }
     
+    .pagination .page-item.disabled a,
+    .pagination .page-item.disabled span {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+        pointer-events: none;
+    }
+    
     button:disabled {
         opacity: 0.5;
         cursor: not-allowed !important;
+    }
+    
+    /* Better btn outline hover in dark mode */
+    [data-bs-theme="dark"] .btn-outline-secondary:hover:not(:disabled) {
+        background-color: var(--bs-secondary) !important;
+        border-color: var(--bs-secondary) !important;
+        color: #fff !important;
+    }
+    
+    /* Active pagination button */
+    .btn-success {
+        background: linear-gradient(135deg, #52c234 0%, #38a169 100%) !important;
+        border-color: #52c234 !important;
+    }
+    
+    .btn-success:hover {
+        opacity: 0.9;
     }
 </style>
 @endpush

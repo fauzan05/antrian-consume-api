@@ -32,11 +32,22 @@ html[data-bs-theme="light"] {
 [data-bs-theme="dark"] .table {
     --bs-table-bg: transparent;
     --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.025);
 }
 
 [data-bs-theme="dark"] .table-light {
     --bs-table-bg: rgba(255, 255, 255, 0.05);
     --bs-table-color: var(--bs-body-color);
+}
+
+/* Better border visibility in dark mode */
+[data-bs-theme="dark"] .border-bottom {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-bs-theme="dark"] hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
 }
 
 /* Form controls in dark mode */
@@ -59,6 +70,22 @@ html[data-bs-theme="light"] {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Dark badge stays dark in both modes for better contrast */
+.badge.bg-dark {
+    background-color: #212529 !important;
+    color: #fff !important;
+}
+
+[data-bs-theme="dark"] .badge.bg-dark {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+}
+
+/* Status badge adjustments for dark mode */
+[data-bs-theme="dark"] .badge {
+    filter: brightness(1.1);
+}
+
 /* Alert improvements */
 [data-bs-theme="dark"] .alert {
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -67,12 +94,34 @@ html[data-bs-theme="light"] {
 /* Button outline improvements in dark mode */
 [data-bs-theme="dark"] .btn-outline-secondary {
     border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
 }
 
 [data-bs-theme="dark"] .btn-outline-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--bs-border-color);
-    color: var(--bs-body-color);
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    color: #fff;
+}
+
+[data-bs-theme="dark"] .btn-outline-danger {
+    border-color: var(--bs-danger);
+    color: var(--bs-danger);
+}
+
+[data-bs-theme="dark"] .btn-outline-danger:hover {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+    color: #fff;
+}
+
+/* Tooltip improvements */
+[data-bs-theme="dark"] .tooltip .tooltip-inner {
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+}
+
+[data-bs-theme="dark"] .tooltip .tooltip-arrow::before {
+    border-top-color: rgba(0, 0, 0, 0.9);
 }
 
 /* Dropdown improvements */
@@ -110,6 +159,29 @@ html[data-bs-theme="light"] {
 [data-bs-theme="dark"] {
     --bs-success: #52c234;
     --bs-success-rgb: 82, 194, 52;
+    --bs-success-bg-subtle: rgba(82, 194, 52, 0.15);
+    --bs-success-border-subtle: rgba(82, 194, 52, 0.3);
+}
+
+/* Ensure success text is always readable */
+.text-success {
+    color: #52c234 !important;
+}
+
+[data-bs-theme="dark"] .text-success {
+    color: #5dd43a !important;
+}
+
+/* Success buttons maintain good contrast */
+.btn-success {
+    background: linear-gradient(135deg, #52c234 0%, #38a169 100%);
+    border-color: #52c234;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #45a82d 0%, #2f8a5a 100%);
+    border-color: #45a82d;
 }
 
 /* Smooth transitions for all theme-aware elements */
